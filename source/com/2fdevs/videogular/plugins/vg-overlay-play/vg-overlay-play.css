@@ -1,0 +1,23 @@
+vg-overlay-play {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: 2; }
+  vg-overlay-play .overlay-play-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; }
+    vg-overlay-play .overlay-play-container:before {
+      font-size: 100px;
+      color: white;
+      content: "\e000";
+      zoom: 1;
+      filter: alpha(opacity=60);
+      opacity: 0.6; }
+
+/*# sourceMappingURL=vg-overlay-play.css.map */

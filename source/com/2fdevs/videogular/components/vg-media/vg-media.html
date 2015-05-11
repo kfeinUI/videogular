@@ -1,0 +1,7 @@
+<style>@import 'vg-media.css';</style>
+
+<video [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
+    <source *for="#video of sources" [src]="video.src" [type]="video.type">
+</video>
+
+<content></content>

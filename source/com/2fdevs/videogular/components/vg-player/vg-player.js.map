@@ -1,0 +1,1 @@
+{"version":3,"file":"vg-player.js","sourceRoot":"","sources":["vg-player.ts"],"names":["VgPlayer","VgPlayer.constructor"],"mappings":"AAAA,yEAAyE;;;;;;;;;;IAIzE;QAOIA;QAEAC,CAACA;QATLD;YAACA,oBAASA,CAACA;gBACPA,QAAQA,EAAEA,WAAWA;aACxBA,CAACA;YACDA,eAAIA,CAACA;gBACFA,WAAWA,EAAEA,2DAA2DA;aAC3EA,CAACA;qBAKDA;QAADA,eAACA;IAADA,CAACA,AAVD,IAUC;IAJY,gBAAQ,WAIpB,CAAA"}
