@@ -97,4 +97,5 @@ gulp.task("watch", function() {
     });
 });
 
-gulp.task('default', ['build', 'serve', 'watch']);
+gulp.task('dev', ['build', 'serve', 'watch']);
+gulp.task('default', ['build']);
