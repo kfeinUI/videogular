@@ -1,57 +1,100 @@
 var gulp = require('gulp');
-var _ = require('lodash');
-var karma = require('karma').server;
 var ts = require('gulp-typescript');
 var watch = require('gulp-watch');
+var plumber = require('gulp-plumber');
+var sass = require('gulp-sass');
+var gutil = require('gulp-util');
+var gls = require('gulp-live-server');
+var sourcemaps = require('gulp-sourcemaps');
+var runSequence = require('run-sequence');
 var merge = require('merge2');
+var del = require('del');
 
-//one could also externalize common config into a separate file,
-//ex.: var karmaCommonConf = require('./karma-common-conf.js');
-var karmaCommonConf = {
-  browsers: ['Chrome'],
-  frameworks: ['jasmine'],
-  files: [
-      'app/bower_components/angular/angular.js',
-      'app/bower_components/angular-mocks/angular-mocks.js',
-      'app/myApp.js',
-      'app/controller.js',
-      'test/*.spec.js'
-  ]
-};
+var tsProject = ts.createProject('tsconfig.json', { typescript: require('typescript') });
 
-/**
- * Run test once and exit
- */
-gulp.task('test', function (done) {
-  karma.start(_.assign({}, karmaCommonConf, {singleRun: true}), done);
+gulp.task('clean-js', function() {
+    del(['build/**/*.js', 'build/**/*.js.map']);
+});
+gulp.task('clean-css', function() {
+    del(['build/**/*.css', 'build/**/*.css.map']);
+});
+gulp.task('clean-html', function() {
+    del(['build/**/*.html']);
+});
+gulp.task('clean-fonts', function() {
+    del(['build/**/fonts']);
 });
 
-/**
- * Watch for file changes and re-run tests on each change
- */
-gulp.task('tdd', function (done) {
-  karma.start(karmaCommonConf, done);
+gulp.task('compile-ts', function() {
+  var tsResult = gulp.src('src/**/*.ts')
+                  .pipe(plumber())
+                  .pipe(sourcemaps.init())
+                  .pipe(ts(tsProject))
+
+  return merge([ // Merge the two output streams, so this task is finished when the IO of both operations are done.
+      tsResult.dts.pipe(gulp.dest('build/definitions')),
+      tsResult.js
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('build/'))
+  ]);
 });
 
-var tsProject = ts.createProject({
-    declarationFiles: false,
-    noExternalResolve: true
+gulp.task('sass', function () {
+  gulp.src('src/**/*.scss')
+    .pipe(plumber())
+    .pipe(sourcemaps.init())
+    .pipe(sass().on('error', sass.logError))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('build'));
 });
 
-gulp.task('scripts', function() {
-    var tsResult = gulp.src('source/**/*.ts')
-                    .pipe(ts(tsProject));
- 
-    return merge([ // Merge the two output streams, so this task is finished when the IO of both operations are done.  
-        tsResult.dts.pipe(gulp.dest('build/definitions')),
-        tsResult.js.pipe(gulp.dest('build/js'))
-    ]);
+gulp.task('html', function() {
+  gulp.src('src/**/*.html')
+    .pipe(plumber())
+    .pipe(gulp.dest('build'));
+});
+
+gulp.task('fonts', function() {
+  gulp.src('src/**/fonts/*.*')
+    .pipe(plumber())
+    .pipe(gulp.dest('build'));
+});
+
+gulp.task('clean', function() {
+  runSequence('clean-js',
+              'clean-css',
+              'clean-html',
+              'clean-fonts');
+});
+
+gulp.task('build', function() {
+  runSequence('clean',
+              'compile-ts',
+              'html',
+              'sass',
+              'fonts');
+});
+
+gulp.task('serve', function() {
+    var server = gls.static('build', 10000);
+    server.start();
+
+    watch(['build/**/*.css', 'build/**/*.html', 'build/**/*.js'], server.notify).on('error', gutil.log);
 });
 
 gulp.task("watch", function() {
-    watch("source/**/*.ts", function() {
-        gulp.start("scripts");
+    watch("src/**/*.ts", function() {
+      runSequence('clean-js',
+                  'compile-ts');
+    });
+    watch("src/**/*.html", function() {
+      runSequence('clean-html',
+                  'html');
+    });
+    watch("src/**/*.scss", function() {
+      runSequence('clean-css',
+                  'sass');
     });
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['build', 'serve', 'watch']);
