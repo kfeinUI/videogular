@@ -33,7 +33,16 @@ class MyAppComponent {
     }
 
     onClickLayer() {
-        console.log("app");
+        console.log("click layer");
+    }
+
+    onPlayerReady(API) {
+        console.log("player ready");
+        console.log(API);
+    }
+
+    onMediaReady() {
+        console.log("media ready");
     }
 }
 

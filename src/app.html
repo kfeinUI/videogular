@@ -1,4 +1,4 @@
-<vg-player>
+<vg-player (on-player-ready)="onPlayerReady(API)" (on-media-ready)="onMediaReady()">
     <vg-overlay-play (on-click-layer)="onClickLayer()"></vg-overlay-play>
 
     <vg-media [vg-src]="sources" [vg-native-controls]="true"></vg-media>

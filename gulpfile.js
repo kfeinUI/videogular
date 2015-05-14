@@ -88,7 +88,7 @@ gulp.task("watch", function() {
                   'compile-ts');
     });
     watch("src/**/*.html", function() {
-      runSequence('clean-html',
+      runSequence(//'clean-html',
                   'html');
     });
     watch("src/**/*.scss", function() {
