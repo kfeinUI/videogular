@@ -1,5 +1,13 @@
-<vg-player (on-player-ready)="onPlayerReady(API)" (on-media-ready)="onMediaReady()">
-    <vg-overlay-play (on-click-layer)="onClickLayer()"></vg-overlay-play>
+<vg-player (on-player-ready)="onPlayerReady($event)"
+           (on-media-ready)="onMediaReady()"
+           (on-video-event)="onVideoEvent($event)">
+    <vg-overlay-play (^on-click-layer)="onClickLayer()"></vg-overlay-play>
 
-    <vg-media [vg-src]="sources" [vg-native-controls]="true"></vg-media>
+    <video id="mainVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
+        <source *for="#video of sources" [src]="video.src" [type]="video.type">
+    </video>
+
+    <video id="pipVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
+        <source *for="#video of sources" [src]="video.src" [type]="video.type">
+    </video>
 </vg-player>

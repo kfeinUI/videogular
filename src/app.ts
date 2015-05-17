@@ -1,8 +1,7 @@
 /// <reference path="../typings/angular2/angular2.d.ts" />
 
-import {Component, View, bootstrap} from 'angular2/angular2';
+import {Component, View, For, bootstrap} from 'angular2/angular2';
 import {VgPlayer} from 'com/2fdevs/videogular/components/vg-player/vg-player';
-import {VgMedia} from 'com/2fdevs/videogular/components/vg-media/vg-media';
 import {VgOverlayPlay} from 'com/2fdevs/videogular/plugins/vg-overlay-play/vg-overlay-play';
 
 @Component({
@@ -10,10 +9,15 @@ import {VgOverlayPlay} from 'com/2fdevs/videogular/plugins/vg-overlay-play/vg-ov
 })
 @View({
     templateUrl: 'app.html',
-    directives: [VgPlayer, VgMedia, VgOverlayPlay]
+    directives: [VgPlayer, VgOverlayPlay, For]
 })
 class MyAppComponent {
     sources:Array<Object>;
+    player:VgPlayer;
+    controls:boolean = true;
+    autoplay:boolean = false;
+    loop:boolean = false;
+    preload:string = 'auto';
 
     constructor() {
         this.sources = [
@@ -30,6 +34,9 @@ class MyAppComponent {
                 type: "video/webm"
             }
         ];
+
+        this.player = document.querySelector("vg-player");
+        console.log(this.player);
     }
 
     onClickLayer() {
@@ -39,10 +46,12 @@ class MyAppComponent {
     onPlayerReady(API) {
         console.log("player ready");
         console.log(API);
+
+        API.play();
     }
 
-    onMediaReady() {
-        console.log("media ready");
+    onVideoEvent(event) {
+        console.log(event.target.id + " --> " + event.type);
     }
 }
 
