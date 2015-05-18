@@ -9,7 +9,7 @@ export class VgAPI extends EventDispatcher {
         super();
     }
 
-    play() {
+    play(id:string="all") {
         this.medias[0].play();
     }
 

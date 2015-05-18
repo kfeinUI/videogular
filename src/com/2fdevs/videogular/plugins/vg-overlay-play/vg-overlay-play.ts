@@ -1,23 +1,18 @@
 /// <reference path="../../../../../../typings/angular2/angular2.d.ts" />
 
-import {Component, View, EventEmitter, Parent, ElementRef} from 'angular2/angular2';
+import {Component, View, ElementRef} from 'angular2/angular2';
 import {Inject} from 'angular2/di';
 
-import {VgPlayer} from 'com/2fdevs/videogular/components/vg-player/vg-player';
-
 @Component({
-    selector: 'vg-overlay-play',
-    events: ['onClickLayer']
+    selector: 'vg-overlay-play'
 })
 @View({
     templateUrl: 'com/2fdevs/videogular/plugins/vg-overlay-play/vg-overlay-play.html'
 })
 export class VgOverlayPlay {
     elem:HTMLElement;
-    onClickLayer:EventEmitter = new EventEmitter();
 
-    constructor(@Parent() player:VgPlayer, @Inject(ElementRef) ref:ElementRef) {
-        console.log(player);
+    constructor(@Inject(ElementRef) ref:ElementRef) {
         this.elem = ref.domElement;
     }
 

@@ -1,5 +1,5 @@
 export class EventDispatcher {
-    _listeners:Array<Object>;
+    _listeners:Object;
 
     constructor() {
     }

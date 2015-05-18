@@ -9,7 +9,7 @@ import {VgAPI} from 'com/2fdevs/videogular/services/vg-api';
 @Component({
     selector: 'vg-player',
     injectables: [VgAPI],
-    events: ['onPlayerReady', 'onVideoEvent']
+    events: ['onPlayerReady']
 })
 @View({
     templateUrl: 'com/2fdevs/videogular/components/vg-player/vg-player.html'
@@ -19,7 +19,6 @@ export class VgPlayer {
     API:VgAPI;
 
     onPlayerReady:EventEmitter = new EventEmitter();
-    onVideoEvent:EventEmitter = new EventEmitter();
 
     constructor(@Inject(ElementRef) ref:ElementRef, API:VgAPI) {
         this.API = API;
