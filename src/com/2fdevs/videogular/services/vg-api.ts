@@ -9,12 +9,18 @@ export class VgAPI extends EventDispatcher {
         super();
     }
 
+    getMediaById(id:string="all") {
+        return this.medias[0];
+    }
+
     play(id:string="all") {
-        this.medias[0].play();
+        var media = this.getMediaById(id);
+        media.play();
     }
 
     setVolume(id:string="all", volume:number=0.5) {
-        this.medias[0].volume = volume;
+        var media = this.getMediaById(id);
+        media.volume = volume;
     }
 
     registerMedia(media:HTMLVideoElement|HTMLAudioElement) {
