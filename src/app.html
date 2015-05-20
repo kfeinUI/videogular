@@ -1,7 +1,7 @@
 <vg-player (on-player-ready)="onPlayerReady($event)"
            (on-media-ready)="onMediaReady()"
            (on-video-event)="onVideoEvent($event)">
-    <vg-overlay-play (^on-click-layer)="onClickLayer()"></vg-overlay-play>
+    <!--vg-overlay-play (^on-click-layer)="onClickLayer()"></vg-overlay-play-->
 
     <video id="mainVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
         <source *for="#video of sources" [src]="video.src" [type]="video.type">

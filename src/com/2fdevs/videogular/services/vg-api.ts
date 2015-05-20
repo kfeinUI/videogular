@@ -1,54 +1,66 @@
-/// <reference path="../../../../../typings/angular2/angular2.d.ts" />
+/// <reference path='../../../../../typings/angular2/angular2.d.ts' />
 
 import {EventDispatcher} from 'com/2fdevs/videogular/utils/EventDispatcher';
 
 export class VgAPI extends EventDispatcher {
-    medias:Array<HTMLVideoElement|HTMLAudioElement> = [];
+    medias:Object = {};
 
     constructor(){
         super();
     }
 
-    getMediaById(id:string="all") {
-        return this.medias[0];
+    getMediaById(id:string) {
+        return this.medias[id];
     }
 
-    play(id:string="all") {
-        var media = this.getMediaById(id);
-        media.play();
+    play(id:string) {
+        if (!id){
+            this.all('play');
+        }
+        else {
+            this.getMediaById(id).play();
+        }
     }
 
-    setVolume(id:string="all", volume:number=0.5) {
+    setVolume(id:string='all', volume:number=0.5) {
+        this.all('setVolume', volume);
         var media = this.getMediaById(id);
-        media.volume = volume;
+    }
+
+    all(...args) {
+        var copy = [].slice.call(args);
+        for(var id in this.medias){
+            copy[0] = id;
+            this[args[0]].apply(this, copy);
+        }
     }
 
     registerMedia(media:HTMLVideoElement|HTMLAudioElement) {
-        this.medias.push(media);
+        this.medias[media.id] = media;
 
         this.connect(media);
     }
 
     connect(media:HTMLVideoElement|HTMLAudioElement) {
-        media.addEventListener("canplay", this.dispatchEvent.bind(this));
-        media.addEventListener("canplaythrough", this.dispatchEvent.bind(this));
-        media.addEventListener("loadedmetadata", this.dispatchEvent.bind(this));
-        media.addEventListener("waiting", this.dispatchEvent.bind(this));
-        media.addEventListener("ended", this.dispatchEvent.bind(this));
-        media.addEventListener("playing", this.dispatchEvent.bind(this));
-        media.addEventListener("play", this.dispatchEvent.bind(this));
-        media.addEventListener("pause", this.dispatchEvent.bind(this));
-        media.addEventListener("volumechange", this.onVolumeChange.bind(this));
-        media.addEventListener("playbackchange", this.dispatchEvent.bind(this));
-        media.addEventListener("timeupdate", this.dispatchEvent.bind(this));
-        media.addEventListener("error", this.dispatchEvent.bind(this));
+        media.addEventListener('canplay', this.dispatchEvent.bind(this));
+        media.addEventListener('canplaythrough', this.dispatchEvent.bind(this));
+        media.addEventListener('loadedmetadata', this.dispatchEvent.bind(this));
+        media.addEventListener('waiting', this.dispatchEvent.bind(this));
+        media.addEventListener('ended', this.dispatchEvent.bind(this));
+        media.addEventListener('playing', this.dispatchEvent.bind(this));
+        media.addEventListener('play', this.dispatchEvent.bind(this));
+        media.addEventListener('pause', this.dispatchEvent.bind(this));
+        media.addEventListener('volumechange', this.onVolumeChange.bind(this));
+        media.addEventListener('playbackchange', this.dispatchEvent.bind(this));
+        media.addEventListener('timeupdate', this.dispatchEvent.bind(this));
+        media.addEventListener('error', this.dispatchEvent.bind(this));
     }
 
     onVolumeChange(event) {
-        console.log("Volume change: " + event.type);
+        console.log('Volume change: ' + event.type);
     }
 
     dispatchEvent(event) {
-        console.log("dispatch event: " + event.type);
+        console.log('dispatch event: ' + event.type);
     }
 }
