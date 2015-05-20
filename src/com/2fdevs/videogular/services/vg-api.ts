@@ -22,9 +22,22 @@ export class VgAPI extends EventDispatcher {
         }
     }
 
-    setVolume(id:string='all', volume:number=0.5) {
-        this.all('setVolume', volume);
-        var media = this.getMediaById(id);
+    pause(id:string) {
+        if (!id){
+            this.all('pause');
+        }
+        else {
+            this.getMediaById(id).pause();
+        }
+    }
+
+    setVolume(id:string, volume:number=0.5) {
+        if (!id){
+            this.all('setVolume', volume);
+        }
+        else {
+            this.getMediaById(id).volume = volume;
+        }
     }
 
     all(...args) {

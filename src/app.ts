@@ -48,6 +48,16 @@ class MyAppComponent {
         console.log(API);
 
         API.play();
+        API.setVolume("mainVideo", 0.2);
+        API.setVolume("pipVideo", 0.6);
+
+        setTimeout(function(){
+            API.pause("mainVideo");
+        },3000);
+
+        setTimeout(function(){
+            API.pause("pipVideo");
+        },4000);
     }
 
     onVideoEvent(event) {
