@@ -17,9 +17,7 @@ export class VgOverlayPlay {
     }
 
     onClick() {
-        console.log("on click play");
         var event:CustomEvent = new CustomEvent('vgPlay', {bubbles: true, cancelable: true});
-        console.log(event);
         this.elem.dispatchEvent(event);
     }
 }

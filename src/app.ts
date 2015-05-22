@@ -47,17 +47,30 @@ class MyAppComponent {
         console.log("player ready");
         console.log(API);
 
-        API.play();
+        // All videos
+        API.setVolume("tutu", 0.6);
+
+        // Main video
+        API.seekTime("mainVideo", 97);
+        API.play("mainVideo");
         API.setVolume("mainVideo", 0.2);
-        API.setVolume("pipVideo", 0.6);
+        // setTimeout(function(){
+        //     API.seekTime("mainVideo", 55);
+        // },3000);
 
-        setTimeout(function(){
-            API.pause("mainVideo");
-        },3000);
+        // pipVideo
+        // API.seekTime("pipVideo", 99, true);
+        // API.setVolume("pipVideo", 0.6);
+        // setTimeout(function(){
+        //     API.pause("pipVideo");
+        // },4000);
 
-        setTimeout(function(){
-            API.pause("pipVideo");
-        },4000);
+    }
+
+    onMediaReady(API) {
+        console.log("media ready");
+        // pipVideo
+        API.seekTime("pipVideo", 50, true);
     }
 
     onVideoEvent(event) {

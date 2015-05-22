@@ -9,7 +9,7 @@ import {VgAPI} from 'com/2fdevs/videogular/services/vg-api';
 @Component({
     selector: 'vg-player',
     injectables: [VgAPI],
-    events: ['onPlayerReady']
+    events: ['onPlayerReady', 'onMediaReady']
 })
 @View({
     templateUrl: 'com/2fdevs/videogular/components/vg-player/vg-player.html'
@@ -19,12 +19,14 @@ export class VgPlayer {
     API:VgAPI;
 
     onPlayerReady:EventEmitter = new EventEmitter();
+    onMediaReady:EventEmitter = new EventEmitter();
 
     constructor(@Inject(ElementRef) ref:ElementRef, API:VgAPI) {
         this.API = API;
         this.elem = ref.domElement;
 
         this.elem.addEventListener('vgPlay', this.onPlay);
+        this.API.addEventListener('vgLoadedAllMetadata', this.onVgMediaReady.bind(this));
 
         var slice:Function = Array.prototype.slice;
         var videos:Array<HTMLAudioElement> = slice.call(this.elem.querySelectorAll("video"));
@@ -42,5 +44,9 @@ export class VgPlayer {
 
     onPlay(event) {
         console.log(event);
+    }
+
+    onVgMediaReady(event) {
+        this.onMediaReady.next(this.API);
     }
 }
