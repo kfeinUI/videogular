@@ -1,3 +1,5 @@
+/// <reference path="../../../../../typings/tsd.d.ts" />
+
 export class EventDispatcher {
     _listeners:Object;
 
