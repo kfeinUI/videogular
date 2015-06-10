@@ -1,6 +1,7 @@
 /// <reference path='../../../../../typings/tsd.d.ts' />
 
 import {EventDispatcher} from 'com/2fdevs/videogular/utils/EventDispatcher';
+import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 
 export class VgAPI extends EventDispatcher {
     medias:Object = {};
@@ -109,7 +110,7 @@ export class VgAPI extends EventDispatcher {
     }
 
     onLoadedAllMetadata() {
-        var event: CustomEvent = new CustomEvent('vgLoadedAllMetadata');
+        var event: CustomEvent = new CustomEvent(VgEvents.VG_LOADED_METADATA);
         this.dispatchEvent(event);
     }
 }

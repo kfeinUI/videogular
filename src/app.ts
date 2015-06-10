@@ -1,4 +1,4 @@
-/// <reference path="../typings/angular2/angular2.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
 
 import {Component, View, NgFor, bootstrap} from 'angular2/angular2';
 import {VgPlayer} from 'com/2fdevs/videogular/components/vg-player/vg-player';
@@ -48,12 +48,12 @@ class MyAppComponent {
         console.log(API);
 
         // All videos
-        API.play();
+        //API.play();
         API.setVolume("tutu", 0.6);
 
         // Main video
         API.seekTime("mainVideo", 97);
-        API.play("mainVideo");
+        //API.play("mainVideo");
         API.setVolume("mainVideo", 0.2);
         // setTimeout(function(){
         //     API.seekTime("mainVideo", 55);
