@@ -78,9 +78,9 @@ export class VgAPI extends EventDispatcher {
     }
 
     connect(media:HTMLVideoElement|HTMLAudioElement) {
-        media.addEventListener('canplay', this.onEvent.bind(this), false);
-        media.addEventListener('canplaythrough', this.onEvent.bind(this), false);
-        media.addEventListener('loadedmetadata', this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_CAN_PLAY, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_CAN_PLAY_THROUGH, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_LOADED_METADATA, this.onEvent.bind(this), false);
         media.addEventListener('waiting', this.onEvent.bind(this), false);
         media.addEventListener('ended', this.onEvent.bind(this), false);
         media.addEventListener('playing', this.onEvent.bind(this), false);
