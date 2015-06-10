@@ -3,6 +3,7 @@
 import {Component, View, NgFor, bootstrap} from 'angular2/angular2';
 import {VgPlayer} from 'com/2fdevs/videogular/components/vg-player/vg-player';
 import {VgOverlayPlay} from 'com/2fdevs/videogular/plugins/vg-overlay-play/vg-overlay-play';
+import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 
 @Component({
     selector: 'my-app'
@@ -47,6 +48,8 @@ class MyAppComponent {
         console.log("player ready");
         console.log(API);
 
+        API.addEventListener(VgEvents.VG_LOADED_METADATA, this.onLoadedMetadata);
+
         // All videos
         //API.play();
         API.setVolume("tutu", 0.6);
@@ -76,6 +79,10 @@ class MyAppComponent {
 
     onVideoEvent(event) {
         console.log(event.target.id + " --> " + event.type);
+    }
+
+    onLoadedMetadata(event) {
+        console.log(event);
     }
 }
 
