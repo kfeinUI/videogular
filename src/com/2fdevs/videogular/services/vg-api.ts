@@ -81,15 +81,15 @@ export class VgAPI extends EventDispatcher {
         media.addEventListener(VgEvents.VG_CAN_PLAY, this.onEvent.bind(this), false);
         media.addEventListener(VgEvents.VG_CAN_PLAY_THROUGH, this.onEvent.bind(this), false);
         media.addEventListener(VgEvents.VG_LOADED_METADATA, this.onEvent.bind(this), false);
-        media.addEventListener('waiting', this.onEvent.bind(this), false);
-        media.addEventListener('ended', this.onEvent.bind(this), false);
-        media.addEventListener('playing', this.onEvent.bind(this), false);
-        media.addEventListener('play', this.onEvent.bind(this), false);
-        media.addEventListener('pause', this.onEvent.bind(this), false);
-        media.addEventListener('volumechange', this.onEvent.bind(this), false);
-        media.addEventListener('playbackchange', this.onEvent.bind(this), false);
-        media.addEventListener('timeupdate', this.onEvent.bind(this), false);
-        media.addEventListener('error', this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_WAITING, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_ENDED, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_PLAYING, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_PLAY, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_PAUSE, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_VOLUME_CHANGE, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_PLAYBACK_CHANGE, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_TIME_UPDATE, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_ERROR, this.onEvent.bind(this), false);
     }
 
     onEvent(event) {
