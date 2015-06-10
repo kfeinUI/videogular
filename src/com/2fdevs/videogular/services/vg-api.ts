@@ -78,39 +78,22 @@ export class VgAPI extends EventDispatcher {
     }
 
     connect(media:HTMLVideoElement|HTMLAudioElement) {
-        media.addEventListener('canplay', this.dispatchEvent.bind(this));
-        media.addEventListener('canplaythrough', this.dispatchEvent.bind(this));
-        media.addEventListener('loadedmetadata', this.onLoadedMetadata.bind(this));
-        media.addEventListener('waiting', this.dispatchEvent.bind(this));
-        media.addEventListener('ended', this.dispatchEvent.bind(this));
-        media.addEventListener('playing', this.dispatchEvent.bind(this));
-        media.addEventListener('play', this.dispatchEvent.bind(this));
-        media.addEventListener('pause', this.dispatchEvent.bind(this));
-        media.addEventListener('volumechange', this.onVolumeChange.bind(this));
-        media.addEventListener('playbackchange', this.dispatchEvent.bind(this));
-        media.addEventListener('timeupdate', this.dispatchEvent.bind(this));
-        media.addEventListener('error', this.dispatchEvent.bind(this));
+        media.addEventListener('canplay', this.onEvent.bind(this), false);
+        media.addEventListener('canplaythrough', this.onEvent.bind(this), false);
+        media.addEventListener('loadedmetadata', this.onEvent.bind(this), false);
+        media.addEventListener('waiting', this.onEvent.bind(this), false);
+        media.addEventListener('ended', this.onEvent.bind(this), false);
+        media.addEventListener('playing', this.onEvent.bind(this), false);
+        media.addEventListener('play', this.onEvent.bind(this), false);
+        media.addEventListener('pause', this.onEvent.bind(this), false);
+        media.addEventListener('volumechange', this.onEvent.bind(this), false);
+        media.addEventListener('playbackchange', this.onEvent.bind(this), false);
+        media.addEventListener('timeupdate', this.onEvent.bind(this), false);
+        media.addEventListener('error', this.onEvent.bind(this), false);
     }
 
-    onVolumeChange(event) {
-        console.log('Volume change: ' + event.type);
-    }
-
-    onLoadedMetadata(event) {
-        var allLoaded:boolean = true;
-        for(var id in this.medias){
-            if(!(this.medias[id].duration > 0)){
-                allLoaded = false;
-                break;
-            }
-        }
-        if(allLoaded){
-            this.onLoadedAllMetadata();
-        }
-    }
-
-    onLoadedAllMetadata() {
-        var event: CustomEvent = new CustomEvent(VgEvents.VG_LOADED_METADATA);
+    onEvent(event) {
+        event.stopPropagation();
         this.dispatchEvent(event);
     }
 }
