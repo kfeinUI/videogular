@@ -8,7 +8,7 @@ import {VgAPI} from 'com/2fdevs/videogular/services/vg-api';
 
 @Component({
     selector: 'vg-player',
-    injectables: [VgAPI],
+    appInjector: [VgAPI],
     events: ['onPlayerReady', 'onMediaReady']
 })
 @View({

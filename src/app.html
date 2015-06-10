@@ -4,10 +4,10 @@
     <!--vg-overlay-play (^on-click-layer)="onClickLayer()"></vg-overlay-play-->
 
     <video id="mainVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
-        <source *for="#video of sources" [src]="video.src" [type]="video.type">
+        <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
     </video>
 
     <video id="pipVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
-        <source *for="#video of sources" [src]="video.src" [type]="video.type">
+        <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
     </video>
 </vg-player>

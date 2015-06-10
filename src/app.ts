@@ -1,6 +1,6 @@
 /// <reference path="../typings/angular2/angular2.d.ts" />
 
-import {Component, View, For, bootstrap} from 'angular2/angular2';
+import {Component, View, NgFor, bootstrap} from 'angular2/angular2';
 import {VgPlayer} from 'com/2fdevs/videogular/components/vg-player/vg-player';
 import {VgOverlayPlay} from 'com/2fdevs/videogular/plugins/vg-overlay-play/vg-overlay-play';
 
@@ -9,7 +9,7 @@ import {VgOverlayPlay} from 'com/2fdevs/videogular/plugins/vg-overlay-play/vg-ov
 })
 @View({
     templateUrl: 'app.html',
-    directives: [VgPlayer, VgOverlayPlay, For]
+    directives: [VgPlayer, VgOverlayPlay, NgFor]
 })
 class MyAppComponent {
     sources:Array<Object>;
@@ -48,6 +48,7 @@ class MyAppComponent {
         console.log(API);
 
         // All videos
+        API.play();
         API.setVolume("tutu", 0.6);
 
         // Main video
