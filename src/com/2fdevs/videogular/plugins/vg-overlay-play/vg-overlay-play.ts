@@ -1,7 +1,6 @@
-/// <reference path="../../../../../../typings/tsd.d.ts" />
-
 import {Component, View, ElementRef} from 'angular2/angular2';
-import {Inject} from 'angular2/di';
+
+import {VgAPI} from 'com/2fdevs/videogular/services/vg-api';
 
 @Component({
     selector: 'vg-overlay-play'
@@ -12,12 +11,11 @@ import {Inject} from 'angular2/di';
 export class VgOverlayPlay {
     elem:HTMLElement;
 
-    constructor(@Inject(ElementRef) ref:ElementRef) {
-        this.elem = ref.domElement;
+    constructor(public API:VgAPI) {
+
     }
 
     onClick() {
-        var event:CustomEvent = new CustomEvent('vgPlay', {bubbles: true, cancelable: true});
-        this.elem.dispatchEvent(event);
+        this.API.play();
     }
 }

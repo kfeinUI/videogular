@@ -1,14 +1,7 @@
-/// <reference path='../../../../../typings/tsd.d.ts' />
-
-import {EventDispatcher} from 'com/2fdevs/videogular/utils/EventDispatcher';
 import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 
-export class VgAPI extends EventDispatcher {
+export class VgAPI {
     medias:Object = {};
-
-    constructor(){
-        super();
-    }
 
     getMediaById(id:string) {
         return this.medias[id];
@@ -23,7 +16,7 @@ export class VgAPI extends EventDispatcher {
             this.all('play');
         }
         else {
-            this.getMediaById(id).play();
+            this.getMediaById(id).media.play();
         }
     }
 
@@ -32,7 +25,7 @@ export class VgAPI extends EventDispatcher {
             this.all('pause');
         }
         else {
-            this.getMediaById(id).pause();
+            this.getMediaById(id).media.pause();
         }
     }
 
@@ -41,7 +34,7 @@ export class VgAPI extends EventDispatcher {
             this.all('setVolume', volume);
         }
         else {
-            this.getMediaById(id).volume = volume;
+            this.getMediaById(id).media.volume = volume;
         }
     }
 
@@ -52,14 +45,14 @@ export class VgAPI extends EventDispatcher {
         else {
             var second;
             if (byPercent) {
-                second = value * this.getMediaById(id).duration / 100;
+                second = value * this.getMediaById(id).media.duration / 100;
                 // TODO: Not working unit on-media-ready is available
             }
             else {
                 second = value;
             }
 
-            this.getMediaById(id).currentTime = second;
+            this.getMediaById(id).media.currentTime = second;
         }
     }
 
@@ -72,28 +65,62 @@ export class VgAPI extends EventDispatcher {
     }
 
     registerMedia(media:HTMLVideoElement|HTMLAudioElement) {
-        this.medias[media.id] = media;
+        this.medias[media.id] = {};
+        this.medias[media.id].media = media;
 
         this.connect(media);
     }
 
     connect(media:HTMLVideoElement|HTMLAudioElement) {
-        media.addEventListener(VgEvents.VG_CAN_PLAY, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_CAN_PLAY_THROUGH, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_LOADED_METADATA, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_WAITING, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_ENDED, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_PLAYING, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_PLAY, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_PAUSE, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_VOLUME_CHANGE, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_PLAYBACK_CHANGE, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_TIME_UPDATE, this.onEvent.bind(this), false);
-        media.addEventListener(VgEvents.VG_ERROR, this.onEvent.bind(this), false);
+        media.addEventListener(VgEvents.VG_CAN_PLAY, this.onCanPlay.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_CAN_PLAY_THROUGH, this.onCanPlayThrough.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_LOADED_METADATA, this.onLoadMetadata.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_WAITING, this.onWait.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_ENDED, this.onComplete.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_PLAYING, this.onStartPlaying.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_PLAY, this.onPlay.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_PAUSE, this.onPause.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_TIME_UPDATE, this.onTimeUpdate.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_ERROR, this.onError.bind(this, media.id), false);
     }
 
-    onEvent(event) {
-        event.stopPropagation();
-        this.dispatchEvent(event);
+    onCanPlay(id:string) {
+        this.medias[id].canPlay = true;
+    }
+
+    onCanPlayThrough(id:string) {
+        this.medias[id].canPlayThrough = true;
+    }
+
+    onLoadMetadata(id:string) {
+        this.medias[id].isMetadataLoaded = true;
+    }
+
+    onWait(id:string) {
+        this.medias[id].isWaiting = true;
+    }
+
+    onComplete(id:string) {
+        this.medias[id].isCompleted = true;
+    }
+
+    onStartPlaying(id:string) {
+        this.medias[id].currentState = 'play';
+    }
+
+    onPlay(id:string) {
+        this.medias[id].currentState = 'play';
+    }
+
+    onPause(id:string) {
+        this.medias[id].currentState = 'pause';
+    }
+
+    onTimeUpdate(id:string) {
+        this.medias[id].currentTime = this.medias[id].media.currentTime;
+    }
+
+    onError(id:string) {
+        console.log('error');
     }
 }

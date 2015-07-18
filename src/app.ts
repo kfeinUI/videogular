@@ -1,8 +1,8 @@
 /// <reference path="../typings/tsd.d.ts" />
-
 import {Component, View, NgFor, bootstrap} from 'angular2/angular2';
 import {VgPlayer} from 'com/2fdevs/videogular/components/vg-player/vg-player';
 import {VgOverlayPlay} from 'com/2fdevs/videogular/plugins/vg-overlay-play/vg-overlay-play';
+import {VgTimeDisplay} from 'com/2fdevs/videogular/plugins/vg-controls/vg-time-display/vg-time-display';
 import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 
 @Component({
@@ -10,7 +10,7 @@ import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 })
 @View({
     templateUrl: 'app.html',
-    directives: [VgPlayer, VgOverlayPlay, NgFor]
+    directives: [VgPlayer, VgOverlayPlay, VgTimeDisplay, NgFor]
 })
 class MyAppComponent {
     sources:Array<Object>;
@@ -47,8 +47,6 @@ class MyAppComponent {
     onPlayerReady(API) {
         console.log("player ready");
         console.log(API);
-
-        API.addEventListener(VgEvents.VG_LOADED_METADATA, this.onLoadedMetadata);
 
         // All videos
         //API.play();

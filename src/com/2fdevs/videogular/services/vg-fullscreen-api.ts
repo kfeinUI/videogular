@@ -1,5 +1,3 @@
-/// <reference path="../../../../../typings/tsd.d.ts" />
-
 export class VgFullscreen {
     polyfill:Object;
     onchange:string;

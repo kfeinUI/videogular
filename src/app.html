@@ -3,6 +3,8 @@
            (on-video-event)="onVideoEvent($event)">
     <!--vg-overlay-play (^on-click-layer)="onClickLayer()"></vg-overlay-play-->
 
+    <vg-time-display></vg-time-display>
+
     <video id="mainVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
         <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
     </video>
@@ -10,4 +12,6 @@
     <video id="pipVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
         <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
     </video>
+
+
 </vg-player>
