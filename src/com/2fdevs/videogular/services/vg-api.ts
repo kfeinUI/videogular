@@ -29,6 +29,19 @@ export class VgAPI {
         }
     }
 
+    getState(id:string) {
+        var state;
+
+        if (!this.validId(id)) {
+            state = this.medias[this.getFirstId()].currentState;
+        }
+        else {
+            state = this.getMediaById(id).currentState;
+        }
+
+        return state;
+    }
+
     setVolume(id:string, volume:number=0.5) {
         if (!this.validId(id)){
             this.all('setVolume', volume);
@@ -64,9 +77,19 @@ export class VgAPI {
         }
     }
 
+    getFirstId() {
+        for (var item in this.medias) {
+            return item;
+        }
+    }
+
     registerMedia(media:HTMLVideoElement|HTMLAudioElement) {
-        this.medias[media.id] = {};
-        this.medias[media.id].media = media;
+        this.medias[media.id] = {
+            media: media,
+            volume: 1,
+            currentTime: 0,
+            currentState: 'stop'
+        };
 
         this.connect(media);
     }
@@ -81,6 +104,7 @@ export class VgAPI {
         media.addEventListener(VgEvents.VG_PLAY, this.onPlay.bind(this, media.id), false);
         media.addEventListener(VgEvents.VG_PAUSE, this.onPause.bind(this, media.id), false);
         media.addEventListener(VgEvents.VG_TIME_UPDATE, this.onTimeUpdate.bind(this, media.id), false);
+        media.addEventListener(VgEvents.VG_VOLUME_CHANGE, this.onVolumeChange.bind(this, media.id), false);
         media.addEventListener(VgEvents.VG_ERROR, this.onError.bind(this, media.id), false);
     }
 
@@ -102,6 +126,7 @@ export class VgAPI {
 
     onComplete(id:string) {
         this.medias[id].isCompleted = true;
+        this.medias[id].currentState = 'stop';
     }
 
     onStartPlaying(id:string) {
@@ -118,6 +143,10 @@ export class VgAPI {
 
     onTimeUpdate(id:string) {
         this.medias[id].currentTime = this.medias[id].media.currentTime;
+    }
+
+    onVolumeChange(id:string) {
+        this.medias[id].volume = this.medias[id].media.volume;
     }
 
     onError(id:string) {

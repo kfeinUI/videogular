@@ -31,9 +31,7 @@ export class VgPlayer {
             this.API.registerMedia(medias[i]);
         }
 
-        setTimeout(function(){
-            this.onPlayerReady.next(this.API);
-        }.bind(this), 16);
+        setTimeout(() => this.onPlayerReady.next(this.API), 16);
     }
 
     onVgMediaReady(event) {

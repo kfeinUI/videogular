@@ -1,0 +1,7 @@
+<style>@import 'vg-play-pause.css';</style>
+
+
+<div class="icon"
+     [class.pause]="API.getState() === 'play'"
+     [class.play]="API.getState() === 'pause' || API.getState() === 'stop'">
+</div>

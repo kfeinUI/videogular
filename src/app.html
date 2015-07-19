@@ -1,17 +1,42 @@
+<h2>One media object</h2>
+
 <vg-player (on-player-ready)="onPlayerReady($event)"
            (on-media-ready)="onMediaReady($event)"
            (on-video-event)="onVideoEvent($event)">
     <!--vg-overlay-play (^on-click-layer)="onClickLayer()"></vg-overlay-play-->
 
-    <vg-time-display></vg-time-display>
+    <vg-controls>
+        <vg-play-pause></vg-play-pause>
+        <vg-time-display>{{ single.currentTime }}</vg-time-display>
+    </vg-controls>
 
-    <video id="mainVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
+    <video #single id="singleVideo" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
         <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
     </video>
-
-    <video id="pipVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
-        <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
-    </video>
-
 
 </vg-player>
+
+<h2>Multiple media objects</h2>
+
+<vg-player (on-player-ready)="onPlayerReady($event)"
+           (on-media-ready)="onMediaReady($event)"
+           (on-video-event)="onVideoEvent($event)">
+    <!--vg-overlay-play (^on-click-layer)="onClickLayer()"></vg-overlay-play-->
+
+    <vg-controls>
+        <vg-play-pause></vg-play-pause>
+        <vg-time-display>{{ main.currentTime }} / {{ pip.currentTime }}</vg-time-display>
+    </vg-controls>
+
+    <video #main id="mainVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
+        <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
+    </video>
+
+    <video #pip id="pipVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
+        <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
+    </video>
+
+</vg-player>
+
+
+
