@@ -9,12 +9,24 @@ vg-mute {
     .icon {
         pointer-events: none;
 
-        &.normal:before {
-            content: "\e007";
+        &.level3:before {
+            content: "\e002";
         }
 
-        &.fullscreen:before {
-            content: "\e008";
+        &.level2:before {
+            content: "\e003";
+        }
+
+        &.level1:before {
+            content: "\e004";
+        }
+
+        &.level0:before {
+            content: "\e005";
+        }
+
+        &.mute:before {
+            content: "\e006";
         }
     }
 }

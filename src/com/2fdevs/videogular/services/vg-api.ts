@@ -48,6 +48,19 @@ export class VgAPI {
         return state;
     }
 
+    getVolume(id:string) {
+        var volume;
+
+        if (!this.validId(id)) {
+            volume = this.medias[this.getFirstId()].volume;
+        }
+        else {
+            volume = this.getMediaById(id).volume;
+        }
+
+        return volume;
+    }
+
     setVolume(id:string, volume:number=0.5) {
         if (!this.validId(id)){
             this.all('setVolume', volume);

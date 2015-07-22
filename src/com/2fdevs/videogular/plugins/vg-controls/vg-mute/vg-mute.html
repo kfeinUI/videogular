@@ -2,9 +2,9 @@
 
 
 <div class="icon"
-     [class.level3]="!API.isFullscreen()"
-     [class.level2]="API.isFullscreen()"
-     [class.level1]="API.isFullscreen()"
-     [class.level0]="API.isFullscreen()"
-     [class.mute]="API.isFullscreen()">
+     [class.level3]="API.getVolume() >= 0.75"
+     [class.level2]="API.getVolume() >= 0.5 && API.getVolume() < 0.75"
+     [class.level1]="API.getVolume() >= 0.25 && API.getVolume() < 0.5"
+     [class.level0]="API.getVolume() > 0 && API.getVolume() < 0.25"
+     [class.mute]="API.getVolume() === 0">
 </div>
