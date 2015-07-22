@@ -1,3 +1,7 @@
+@import "vg-mixins";
+
+@import "vg-time-display/vg-time-display";
+
 vg-controls {
     position: absolute;
     display: flex;

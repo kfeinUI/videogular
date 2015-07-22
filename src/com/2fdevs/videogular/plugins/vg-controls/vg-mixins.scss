@@ -1,0 +1,9 @@
+@mixin control($width: auto){
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    width: $width;
+    cursor: pointer;
+    color: white;
+    line-height: 50px;
+}

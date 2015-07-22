@@ -1,10 +1,7 @@
+@import "../vg-mixins";
+
 vg-play-pause {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    cursor: pointer;
-    color: white;
+    @include control(50px);
 
     .icon {
         pointer-events: none;
