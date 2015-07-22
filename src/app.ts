@@ -6,6 +6,8 @@ import {VgOverlayPlay} from 'com/2fdevs/videogular/plugins/vg-overlay-play/vg-ov
 import {VgControls} from 'com/2fdevs/videogular/plugins/vg-controls/vg-controls';
 import {VgTimeDisplay} from 'com/2fdevs/videogular/plugins/vg-controls/vg-time-display/vg-time-display';
 import {VgPlayPause} from 'com/2fdevs/videogular/plugins/vg-controls/vg-play-pause/vg-play-pause';
+import {VgMute} from 'com/2fdevs/videogular/plugins/vg-controls/vg-mute/vg-mute';
+import {VgFullscreen} from 'com/2fdevs/videogular/plugins/vg-controls/vg-fullscreen/vg-fullscreen';
 
 import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 
@@ -14,7 +16,7 @@ import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 })
 @View({
     templateUrl: 'app.html',
-    directives: [VgPlayer, VgOverlayPlay, VgControls, VgTimeDisplay, VgPlayPause, NgFor]
+    directives: [VgPlayer, VgOverlayPlay, VgControls, VgTimeDisplay, VgPlayPause, VgFullscreen, NgFor]
 })
 class MyAppComponent {
     sources:Array<Object>;

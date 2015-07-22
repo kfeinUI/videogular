@@ -22,6 +22,8 @@ export class VgPlayer {
         this.API = API;
         this.elem = ref.nativeElement;
 
+        this.API.registerElement(this.elem);
+
         var slice:Function = Array.prototype.slice;
         var videos:Array<HTMLVideoElement> = slice.call(this.elem.querySelectorAll("video"));
         var audios:Array<HTMLAudioElement> = slice.call(this.elem.querySelectorAll("audio"));

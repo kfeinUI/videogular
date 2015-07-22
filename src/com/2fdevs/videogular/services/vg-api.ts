@@ -1,7 +1,13 @@
 import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 
+import {VgFullscreenAPI} from 'com/2fdevs/videogular/services/vg-fullscreen-api';
+
 export class VgAPI {
     medias:Object = {};
+
+    constructor() {
+        VgFullscreenAPI.init();
+    }
 
     getMediaById(id:string) {
         return this.medias[id];
@@ -83,6 +89,10 @@ export class VgAPI {
         }
     }
 
+    registerElement(elem:HTMLElement) {
+        this.videogularElement = elem;
+    }
+
     registerMedia(media:HTMLVideoElement|HTMLAudioElement) {
         this.medias[media.id] = {
             media: media,
@@ -92,6 +102,19 @@ export class VgAPI {
         };
 
         this.connect(media);
+    }
+
+    toggleFullscreen() {
+        if (VgFullscreenAPI.isFullscreen()) {
+            VgFullscreenAPI.exit();
+        }
+        else {
+            VgFullscreenAPI.request(this.videogularElement);
+        }
+    }
+
+    isFullscreen() {
+        return VgFullscreenAPI.isFullscreen();
     }
 
     connect(media:HTMLVideoElement|HTMLAudioElement) {

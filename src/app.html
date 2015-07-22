@@ -8,6 +8,7 @@
     <vg-controls>
         <vg-play-pause></vg-play-pause>
         <vg-time-display>{{ single.currentTime }}</vg-time-display>
+        <vg-fullscreen></vg-fullscreen>
     </vg-controls>
 
     <video #single id="singleVideo" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
@@ -25,7 +26,8 @@
 
     <vg-controls>
         <vg-play-pause></vg-play-pause>
-        <vg-time-display>{{ main.currentTime }} / {{ pip.currentTime }}</vg-time-display>
+        <vg-time-display>{{ main.currentTime | date:'mmss' }} / {{ pip.currentTime | date:'mmss' }}</vg-time-display>
+        <vg-fullscreen></vg-fullscreen>
     </vg-controls>
 
     <video #main id="mainVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">

@@ -1,9 +1,9 @@
-export class VgFullscreen {
+export class VgFullscreenAPI {
     polyfill:Object;
     onchange:string;
     onerror:string;
 
-    constructor() {
+    static init() {
         const APIs = {
             w3: {
                 enabled: "fullscreenEnabled",

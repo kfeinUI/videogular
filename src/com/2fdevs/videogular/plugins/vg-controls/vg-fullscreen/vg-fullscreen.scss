@@ -1,0 +1,20 @@
+vg-fullscreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    cursor: pointer;
+    color: white;
+
+    .icon {
+        pointer-events: none;
+
+        &.normal:before {
+            content: "\e007";
+        }
+
+        &.fullscreen:before {
+            content: "\e008";
+        }
+    }
+}
