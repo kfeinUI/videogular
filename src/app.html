@@ -7,9 +7,9 @@
 
     <vg-controls>
         <vg-play-pause></vg-play-pause>
-        <vg-time-display>{{ single.currentTime | date:'mm:ss' }}</vg-time-display>
-        <vg-time-display>{{ single.duration }}</vg-time-display>
-        <vg-time-display>{{ single.timeLeft }}</vg-time-display>
+        <vg-time-display>{{ single.elapsedTime | date:'mm:ss' }}</vg-time-display>
+        <vg-time-display>{{ single.totalTime | date:'mm:ss' }}</vg-time-display>
+        <vg-time-display>{{ single.remainingTime | date:'mm:ss' }}</vg-time-display>
     </vg-controls>
 
     <video #single id="singleVideo" [autoplay]="autoplay" [loop]="loop" [preload]="preload">

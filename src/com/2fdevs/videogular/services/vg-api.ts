@@ -145,6 +145,11 @@ export class VgAPI {
     onTimeUpdate(id:string) {
         this.medias[id].currentTime = this.medias[id].media.currentTime;
         this.medias[id].timeLeft = this.medias[id].duration - this.medias[id].currentTime;
+        this.medias[id].media.timeLeft = this.medias[id].timeLeft;
+
+        this.medias[id].media.elapsedTime = new Date(1970,0,1).setSeconds(this.medias[id].media.currentTime);
+        this.medias[id].media.totalTime = new Date(1970,0,1).setSeconds(this.medias[id].media.duration);
+        this.medias[id].media.remainingTime = new Date(1970,0,1).setSeconds(this.medias[id].media.timeLeft);
     }
 
     onVolumeChange(id:string) {
