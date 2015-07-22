@@ -1,5 +1,6 @@
+@import "../vg-mixins";
+
 vg-time-display {
-    display: block;
+    @include control;
     pointer-events: none;
-    color: white;
 }

@@ -141,6 +141,7 @@ export class VgAPI {
 
     onLoadMetadata(id:string) {
         this.medias[id].isMetadataLoaded = true;
+        this.medias[id].duration = this.medias[id].media.duration;
     }
 
     onWait(id:string) {
@@ -166,6 +167,7 @@ export class VgAPI {
 
     onTimeUpdate(id:string) {
         this.medias[id].currentTime = this.medias[id].media.currentTime;
+        this.medias[id].timeLeft = this.medias[id].duration - this.medias[id].currentTime;
     }
 
     onVolumeChange(id:string) {

@@ -1,7 +1,10 @@
-<style>@import 'vg-fullscreen.css';</style>
+<style>@import 'vg-mute.css';</style>
 
 
 <div class="icon"
-     [class.normal]="!API.isFullscreen()"
-     [class.fullscreen]="API.isFullscreen()">
+     [class.level3]="!API.isFullscreen()"
+     [class.level2]="API.isFullscreen()"
+     [class.level1]="API.isFullscreen()"
+     [class.level0]="API.isFullscreen()"
+     [class.mute]="API.isFullscreen()">
 </div>
