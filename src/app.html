@@ -7,9 +7,9 @@
 
     <vg-controls>
         <vg-play-pause></vg-play-pause>
-        <vg-time-display>{{ single.elapsedTime | date:'mm:ss' }}</vg-time-display>
-        <vg-time-display>{{ single.totalTime | date:'mm:ss' }}</vg-time-display>
-        <vg-time-display>{{ single.remainingTime | date:'mm:ss' }}</vg-time-display>
+        <vg-time-display>{{ single.time.current | date:'mm:ss' }}</vg-time-display>
+        <vg-time-display>{{ single.time.total | date:'mm:ss' }}</vg-time-display>
+        <vg-time-display>{{ single.time.left | date:'mm:ss' }}</vg-time-display>
         <vg-fullscreen></vg-fullscreen>
         <vg-mute></vg-mute>
     </vg-controls>
@@ -29,7 +29,7 @@
 
     <vg-controls>
         <vg-play-pause></vg-play-pause>
-        <vg-time-display>{{ main.currentTime | date:'mm:ss' }} / {{ pip.currentTime }}</vg-time-display>
+        <vg-time-display>{{ main.time.current | date:'mm:ss' }} / {{ pip.time.current | date:'mm:ss' }}</vg-time-display>
         <vg-fullscreen></vg-fullscreen>
         <vg-mute></vg-mute>
     </vg-controls>

@@ -110,8 +110,19 @@ export class VgAPI {
         this.medias[media.id] = {
             media: media,
             volume: 1,
-            currentTime: 0,
+            time: {
+                current: 0,
+                total: 0,
+                left: 0
+            },
             currentState: 'stop'
+        };
+
+        // Init times
+        this.medias[media.id].media.time = {
+            current: 0,
+            total: 0,
+            left: 0
         };
 
         this.connect(media);
@@ -154,7 +165,9 @@ export class VgAPI {
 
     onLoadMetadata(id:string) {
         this.medias[id].isMetadataLoaded = true;
-        this.medias[id].duration = this.medias[id].media.duration;
+
+        this.medias[id].time.total = this.medias[id].media.duration * 1000;
+        this.medias[id].media.time.total = this.medias[id].media.duration * 1000;
     }
 
     onWait(id:string) {
@@ -179,13 +192,11 @@ export class VgAPI {
     }
 
     onTimeUpdate(id:string) {
-        this.medias[id].currentTime = this.medias[id].media.currentTime;
-        this.medias[id].timeLeft = this.medias[id].duration - this.medias[id].currentTime;
-        this.medias[id].media.timeLeft = this.medias[id].timeLeft;
+        this.medias[id].time.current = this.medias[id].media.currentTime * 1000;
+        this.medias[id].time.left = (this.medias[id].media.duration - this.medias[id].media.currentTime) * 1000;
 
-        this.medias[id].media.elapsedTime = new Date(1970,0,1).setSeconds(this.medias[id].media.currentTime);
-        this.medias[id].media.totalTime = new Date(1970,0,1).setSeconds(this.medias[id].media.duration);
-        this.medias[id].media.remainingTime = new Date(1970,0,1).setSeconds(this.medias[id].media.timeLeft);
+        this.medias[id].media.time.current = this.medias[id].time.current;
+        this.medias[id].media.time.left = this.medias[id].time.left;
     }
 
     onVolumeChange(id:string) {
