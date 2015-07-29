@@ -21,7 +21,7 @@ export class VgPlayPause extends VgAbstractControl {
     onClick() {
         var state = this.target.state;
 
-        if (this.target.state.length >= 0) state = this.target.state[0].state;
+        if (this.target.state instanceof Array) state = this.target.state[0].state;
 
         switch (state) {
             case 'play':
