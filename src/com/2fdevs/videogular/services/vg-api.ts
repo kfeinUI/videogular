@@ -187,7 +187,7 @@ export class VgAPI {
 
     onComplete(id:string) {
         this.medias[id].isCompleted = true;
-        this.medias[id].state = 'stop';
+        this.medias[id].state = 'pause';
     }
 
     onStartPlaying(id:string) {
