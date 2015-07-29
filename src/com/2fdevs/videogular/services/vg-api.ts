@@ -19,6 +19,7 @@ export class VgAPI {
         return this.medias[id];
     }
 
+
     play() {
         for (var id in this.medias) {
             this.medias[id].play();
@@ -32,51 +33,43 @@ export class VgAPI {
     }
 
     get duration() {
-        var result = [];
-
-        for (var id in this.medias) {
-            result.push({id: id, duration: this.medias[id].duration});
-        }
-
-        if (result.length === 1) result = result[0];
-
-        return result;
+        return this.$$getAllProperties('duration');
     }
 
-    set state(newState:string) {
-        for (var id in this.medias) {
-            this.medias[id].state = newState;
-        }
+    set state(state) {
+        this.$$setAllProperties('state', state);
     }
 
     get state() {
-        var result = [];
-
-        for (var id in this.medias) {
-            result.push({id: id, state: this.medias[id].state});
-        }
-
-        if (result.length === 1) result = result[0];
-
-        return result;
+        return this.$$getAllProperties('state');
     }
 
-    set volume(volume:number) {
-        for (var id in this.medias) {
-            this.medias[id].volume = volume;
-        }
+    set volume(volume) {
+        this.$$setAllProperties('volume', volume);
     }
 
     get volume() {
-        var result = [];
+        return this.$$getAllProperties('volume');
+    }
 
-        for (var id in this.medias) {
-            result.push({id: id, volume: this.medias[id].volume});
-        }
+    get canPlay() {
+        return this.$$getAllProperties('canPlay');
+    }
 
-        if (result.length === 1) result = result[0];
+    get canPlayThrough() {
+        return this.$$getAllProperties('canPlayThrough');
+    }
 
-        return result;
+    get isMetadataLoaded() {
+        return this.$$getAllProperties('isMetadataLoaded');
+    }
+
+    get isWaiting() {
+        return this.$$getAllProperties('isWaiting');
+    }
+
+    get isCompleted() {
+        return this.$$getAllProperties('isCompleted');
     }
 
     seekTime(value:number = 0, byPercent:boolean = false) {
@@ -97,6 +90,28 @@ export class VgAPI {
         }
 
         media.currentTime = second;
+    }
+
+    $$getAllProperties(property:string){
+        var result = [];
+
+        for (var id in this.medias) {
+            var mediaProperty = {
+                id: id
+            };
+            mediaProperty[property] = this.medias[id][property];
+            result.push(mediaProperty);
+        }
+
+        if (result.length === 1) result = result[0];
+
+        return result;        
+    }
+
+    $$setAllProperties(property:string, value){
+        for (var id in this.medias) {
+            this.medias[id][property] = value;
+        }        
     }
 
     registerElement(elem:HTMLElement) {
