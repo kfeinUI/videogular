@@ -107,7 +107,7 @@ export class VgAPI {
         media.isMetadataLoaded = false;
         media.isWaiting = false;
         media.isCompleted = false;
-        media.state = 'stop';
+        media.state = 'pause';
         media.seekTime = (value:number=0, byPercent:boolean=false) => {
             this.$$seek(media, value, byPercent);
         };

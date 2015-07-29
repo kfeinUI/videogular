@@ -18,10 +18,23 @@ export class VgPlayPause extends VgAbstractControl {
         super(ref, API);
     }
 
-    onClick() {
+    getState() {
         var state = this.target.state;
+        
+        if (this.target.state instanceof Array) {
+            state = 'pause';
+            for (var i = 0, l = this.target.state.length; i < l; i++){
+                if (this.target.state[i].state === 'play'){
+                    state = 'play';
+                    break;
+                }
+            }
+        }
+        return state;
+    }
 
-        if (this.target.state instanceof Array) state = this.target.state[0].state;
+    onClick() {
+        var state = this.getState();
 
         switch (state) {
             case 'play':
@@ -29,7 +42,6 @@ export class VgPlayPause extends VgAbstractControl {
                 break;
 
             case 'pause':
-            case 'stop':
                 this.target.play();
                 break;
         }
