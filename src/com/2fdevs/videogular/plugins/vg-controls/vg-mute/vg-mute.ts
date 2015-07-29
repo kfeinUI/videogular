@@ -24,8 +24,6 @@ export class VgMute extends VgAbstractControl {
     onClick() {
         var volume = this.getVolume();
 
-        console.log(volume);
-
         if (volume === 0) {
             this.target.volume = this.currentVolume;
         }

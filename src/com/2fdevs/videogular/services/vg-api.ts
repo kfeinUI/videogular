@@ -125,12 +125,15 @@ export class VgAPI {
         this.connect(media);
     }
 
-    toggleFullscreen() {
+    // TODO: Add support for mobile devices
+    toggleFullscreen(element) {
+        if (!element) element = this.videogularElement;
+
         if (VgFullscreenAPI.isFullscreen()) {
             VgFullscreenAPI.exit();
         }
         else {
-            VgFullscreenAPI.request(this.videogularElement);
+            VgFullscreenAPI.request(element);
         }
     }
 
