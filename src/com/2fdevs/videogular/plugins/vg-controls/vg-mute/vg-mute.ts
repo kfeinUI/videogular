@@ -22,12 +22,36 @@ export class VgMute extends VgAbstractControl {
     }
 
     onClick() {
-        if (this.target.volume === 0) {
+        var volume = this.getVolume();
+
+        console.log(volume);
+
+        if (volume === 0) {
             this.target.volume = this.currentVolume;
         }
         else {
-            this.currentVolume = this.target.volume;
+            this.currentVolume = volume;
             this.target.volume = 0;
         }
+    }
+
+    getVolume() {
+        var volume;
+        var result;
+
+        if (this.target.volume instanceof Array) {
+            volume = 0;
+
+            for (var i=0, l=this.target.volume.length; i<l; i++) {
+                volume += this.target.volume[i].volume;
+            }
+
+            result = (volume / this.target.volume.length);
+        }
+        else {
+            result = this.target.volume;
+        }
+
+        return result;
     }
 }

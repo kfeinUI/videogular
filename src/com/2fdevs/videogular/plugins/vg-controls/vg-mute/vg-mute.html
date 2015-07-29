@@ -2,9 +2,9 @@
 
 
 <div class="icon"
-     [class.level3]="target.volume >= 0.75"
-     [class.level2]="target.volume >= 0.5 && target.volume < 0.75"
-     [class.level1]="target.volume >= 0.25 && target.volume < 0.5"
-     [class.level0]="target.volume > 0 && target.volume < 0.25"
-     [class.mute]="target.volume === 0">
+     [class.level3]="getVolume() >= 0.75"
+     [class.level2]="getVolume() >= 0.5 && getVolume() < 0.75"
+     [class.level1]="getVolume() >= 0.25 && getVolume() < 0.5"
+     [class.level0]="getVolume() > 0 && getVolume() < 0.25"
+     [class.mute]="getVolume() === 0">
 </div>

@@ -68,7 +68,15 @@ export class VgAPI {
     }
 
     get volume() {
+        var result = [];
 
+        for (var id in this.medias) {
+            result.push({id: id, volume: this.medias[id].volume});
+        }
+
+        if (result.length === 1) result = result[0];
+
+        return result;
     }
 
     seekTime(value:number = 0, byPercent:boolean = false) {
