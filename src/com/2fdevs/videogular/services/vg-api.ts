@@ -19,13 +19,13 @@ export class VgAPI {
         return this.medias[id];
     }
 
-    play(id:string) {
+    play() {
         for (var id in this.medias) {
             this.medias[id].play();
         }
     }
 
-    pause(id:string) {
+    pause() {
         for (var id in this.medias) {
             this.medias[id].pause();
         }

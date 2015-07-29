@@ -21,7 +21,7 @@ import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 class MyAppComponent {
     sources:Array<Object>;
     player:VgPlayer;
-    controls:boolean = true;
+    controls:boolean = false;
     autoplay:boolean = false;
     loop:boolean = false;
     preload:string = 'auto';
