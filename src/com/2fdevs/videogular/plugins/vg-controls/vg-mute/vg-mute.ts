@@ -1,6 +1,7 @@
 import {Component, View, ElementRef} from 'angular2/angular2';
 
 import {VgAPI} from 'com/2fdevs/videogular/services/vg-api';
+import {VgAbstractControl} from 'com/2fdevs/videogular/components/vg-abstract-control/vg-abstract-control';
 
 @Component({
     selector: 'vg-mute',
@@ -11,20 +12,22 @@ import {VgAPI} from 'com/2fdevs/videogular/services/vg-api';
 @View({
     templateUrl: 'com/2fdevs/videogular/plugins/vg-controls/vg-mute/vg-mute.html'
 })
-export class VgMute {
+export class VgMute extends VgAbstractControl {
     currentVolume:number;
 
-    constructor(public API:VgAPI) {
-        this.currentVolume = this.API.getVolume();
+    constructor(public ref:ElementRef, public API:VgAPI) {
+        super(ref, API);
+
+        this.currentVolume = this.target.volume;
     }
 
     onClick() {
-        if (this.API.getVolume() > 0) {
-            this.currentVolume = this.API.getVolume();
-            this.API.setVolume(null, 0);
+        if (this.target.volume === 0) {
+            this.target.volume = this.currentVolume;
         }
         else {
-            this.API.setVolume(null, this.currentVolume);
+            this.currentVolume = this.target.volume;
+            this.target.volume = 0;
         }
     }
 }

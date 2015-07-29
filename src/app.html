@@ -7,11 +7,17 @@
 
     <vg-controls>
         <vg-play-pause></vg-play-pause>
+
         <vg-time-display>{{ single.time.current | date:'mm:ss' }}</vg-time-display>
-        <vg-time-display>{{ single.time.total | date:'mm:ss' }}</vg-time-display>
+
+        <vg-scrub-bar for="singleVideo"></vg-scrub-bar>
+
         <vg-time-display>{{ single.time.left | date:'mm:ss' }}</vg-time-display>
-        <vg-fullscreen></vg-fullscreen>
+        <vg-time-display>{{ single.time.total | date:'mm:ss' }}</vg-time-display>
+
         <vg-mute></vg-mute>
+
+        <vg-fullscreen></vg-fullscreen>
     </vg-controls>
 
     <video #single id="singleVideo" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
@@ -28,17 +34,22 @@
     <!--vg-overlay-play (^on-click-layer)="onClickLayer()"></vg-overlay-play-->
 
     <vg-controls>
-        <vg-play-pause></vg-play-pause>
-        <vg-time-display>{{ main.time.current | date:'mm:ss' }} / {{ pip.time.current | date:'mm:ss' }}</vg-time-display>
-        <vg-fullscreen></vg-fullscreen>
-        <vg-mute></vg-mute>
+        <vg-play-pause for="*"></vg-play-pause>
+
+        <vg-scrub-bar for="*"></vg-scrub-bar>
+
+        <vg-time-display>{{ main.time.left | date:'mm:ss' }}</vg-time-display>
+
+        <vg-mute for="*"></vg-mute>
+
+        <vg-fullscreen for="*"></vg-fullscreen>
     </vg-controls>
 
-    <video #main id="mainVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
+    <video #main id="mainVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload" style="width: 50%;">
         <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
     </video>
 
-    <video #pip id="pipVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload">
+    <video #pip id="pipVideo" [controls]="controls" [autoplay]="autoplay" [loop]="loop" [preload]="preload" style="width: 50%;">
         <source *ng-for="#video of sources" [src]="video.src" [type]="video.type">
     </video>
 

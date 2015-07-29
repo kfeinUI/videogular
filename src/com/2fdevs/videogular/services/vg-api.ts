@@ -9,97 +9,86 @@ export class VgAPI {
         VgFullscreenAPI.init();
     }
 
+    getDefaultMedia() {
+        for (var item in this.medias) {
+            return this.medias[item];
+        }
+    }
+
     getMediaById(id:string) {
         return this.medias[id];
     }
 
-    validId(id:string) {
-        return !!id && !!this.medias[id];
-    }
-
     play(id:string) {
-        if (!this.validId(id)){
-            this.all('play');
-        }
-        else {
-            this.getMediaById(id).media.play();
+        for (var id in this.medias) {
+            this.medias[id].play();
         }
     }
 
     pause(id:string) {
-        if (!this.validId(id)){
-            this.all('pause');
+        for (var id in this.medias) {
+            this.medias[id].pause();
+        }
+    }
+
+    get duration() {
+        var result = [];
+
+        for (var id in this.medias) {
+            result.push({id: id, duration: this.medias[id].duration});
+        }
+
+        if (result.length === 1) result = result[0];
+
+        return result;
+    }
+
+    set state(newState:string) {
+        for (var id in this.medias) {
+            this.medias[id].state = newState;
+        }
+    }
+
+    get state() {
+        var result = [];
+
+        for (var id in this.medias) {
+            result.push({id: id, state: this.medias[id].state});
+        }
+
+        if (result.length === 1) result = result[0];
+
+        return result;
+    }
+
+    set volume(volume:number) {
+        for (var id in this.medias) {
+            this.medias[id].volume = volume;
+        }
+    }
+
+    get volume() {
+
+    }
+
+    seekTime(value:number = 0, byPercent:boolean = false) {
+        for (var id in this.medias) {
+            this.$$seek(this.medias[id], value, byPercent);
+        }
+    }
+
+    $$seek(media:HTMLVideoElement|HTMLAudioElement, value:number = 0, byPercent:boolean = false) {
+        var second;
+
+        if (byPercent) {
+            second = value * media.duration / 100;
+            // TODO: Not working unit on-media-ready is available
         }
         else {
-            this.getMediaById(id).media.pause();
-        }
-    }
-
-    getState(id:string) {
-        var state;
-
-        if (!this.validId(id)) {
-            state = this.medias[this.getFirstId()].currentState;
-        }
-        else {
-            state = this.getMediaById(id).currentState;
+            second = value;
         }
 
-        return state;
-    }
-
-    getVolume(id:string) {
-        var volume;
-
-        if (!this.validId(id)) {
-            volume = this.medias[this.getFirstId()].volume;
-        }
-        else {
-            volume = this.getMediaById(id).volume;
-        }
-
-        return volume;
-    }
-
-    setVolume(id:string, volume:number=0.5) {
-        if (!this.validId(id)){
-            this.all('setVolume', volume);
-        }
-        else {
-            this.getMediaById(id).media.volume = volume;
-        }
-    }
-
-    seekTime(id:string, value:number=0, byPercent:boolean=false) {
-        if (!this.validId(id)){
-            this.all('seekTime', value, byPercent);
-        }
-        else {
-            var second;
-            if (byPercent) {
-                second = value * this.getMediaById(id).media.duration / 100;
-                // TODO: Not working unit on-media-ready is available
-            }
-            else {
-                second = value;
-            }
-
-            this.getMediaById(id).media.currentTime = second;
-        }
-    }
-
-    all(...args) {
-        var copy:Array<Object> = [].slice.call(args);
-        for(var id in this.medias){
-            copy[0] = id;
-            this[args[0]].apply(this, copy);
-        }
-    }
-
-    getFirstId() {
-        for (var item in this.medias) {
-            return item;
-        }
+        media.currentTime = second;
     }
 
     registerElement(elem:HTMLElement) {
@@ -107,23 +96,23 @@ export class VgAPI {
     }
 
     registerMedia(media:HTMLVideoElement|HTMLAudioElement) {
-        this.medias[media.id] = {
-            media: media,
-            volume: 1,
-            time: {
-                current: 0,
-                total: 0,
-                left: 0
-            },
-            currentState: 'stop'
-        };
-
-        // Init times
-        this.medias[media.id].media.time = {
+        media.time = {
             current: 0,
             total: 0,
             left: 0
         };
+
+        media.canPlay = false;
+        media.canPlayThrough = false;
+        media.isMetadataLoaded = false;
+        media.isWaiting = false;
+        media.isCompleted = false;
+        media.state = 'stop';
+        media.seekTime = (value:number=0, byPercent:boolean=false) => {
+            this.$$seek(media, value, byPercent);
+        };
+
+        this.medias[media.id] = media;
 
         this.connect(media);
     }
@@ -166,8 +155,7 @@ export class VgAPI {
     onLoadMetadata(id:string) {
         this.medias[id].isMetadataLoaded = true;
 
-        this.medias[id].time.total = this.medias[id].media.duration * 1000;
-        this.medias[id].media.time.total = this.medias[id].media.duration * 1000;
+        this.medias[id].time.total = this.medias[id].duration * 1000;
     }
 
     onWait(id:string) {
@@ -176,31 +164,28 @@ export class VgAPI {
 
     onComplete(id:string) {
         this.medias[id].isCompleted = true;
-        this.medias[id].currentState = 'stop';
+        this.medias[id].state = 'stop';
     }
 
     onStartPlaying(id:string) {
-        this.medias[id].currentState = 'play';
+        this.medias[id].state = 'play';
     }
 
     onPlay(id:string) {
-        this.medias[id].currentState = 'play';
+        this.medias[id].state = 'play';
     }
 
     onPause(id:string) {
-        this.medias[id].currentState = 'pause';
+        this.medias[id].state = 'pause';
     }
 
     onTimeUpdate(id:string) {
-        this.medias[id].time.current = this.medias[id].media.currentTime * 1000;
-        this.medias[id].time.left = (this.medias[id].media.duration - this.medias[id].media.currentTime) * 1000;
-
-        this.medias[id].media.time.current = this.medias[id].time.current;
-        this.medias[id].media.time.left = this.medias[id].time.left;
+        this.medias[id].time.current = this.medias[id].currentTime * 1000;
+        this.medias[id].time.left = (this.medias[id].duration - this.medias[id].currentTime) * 1000;
     }
 
     onVolumeChange(id:string) {
-        this.medias[id].volume = this.medias[id].media.volume;
+        //this.medias[id].volume = this.medias[id].volume;
     }
 
     onError(id:string) {

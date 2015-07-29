@@ -5,6 +5,7 @@ import {VgOverlayPlay} from 'com/2fdevs/videogular/plugins/vg-overlay-play/vg-ov
 
 import {VgControls} from 'com/2fdevs/videogular/plugins/vg-controls/vg-controls';
 import {VgPlayPause} from 'com/2fdevs/videogular/plugins/vg-controls/vg-play-pause/vg-play-pause';
+import {VgScrubBar} from 'com/2fdevs/videogular/plugins/vg-controls/vg-scrub-bar/vg-scrub-bar';
 import {VgMute} from 'com/2fdevs/videogular/plugins/vg-controls/vg-mute/vg-mute';
 import {VgFullscreen} from 'com/2fdevs/videogular/plugins/vg-controls/vg-fullscreen/vg-fullscreen';
 
@@ -15,7 +16,7 @@ import {VgEvents} from 'com/2fdevs/videogular/events/VgEvents';
 })
 @View({
     templateUrl: 'app.html',
-    directives: [VgPlayer, VgOverlayPlay, VgControls, VgPlayPause, VgFullscreen, VgMute, NgFor]
+    directives: [VgPlayer, VgOverlayPlay, VgControls, VgPlayPause, VgScrubBar, VgMute, VgFullscreen, NgFor]
 })
 class MyAppComponent {
     sources:Array<Object>;
@@ -52,25 +53,6 @@ class MyAppComponent {
     onPlayerReady(API) {
         console.log("player ready");
         console.log(API);
-
-        // All videos
-        //API.play();
-
-        // Main video
-        API.seekTime("mainVideo", 97);
-        //API.play("mainVideo");
-        //API.setVolume("mainVideo", 0.2);
-        // setTimeout(function(){
-        //     API.seekTime("mainVideo", 55);
-        // },3000);
-
-        // pipVideo
-        // API.seekTime("pipVideo", 99, true);
-        // API.setVolume("pipVideo", 0.6);
-        // setTimeout(function(){
-        //     API.pause("pipVideo");
-        // },4000);
-
     }
 
     onMediaReady(API) {

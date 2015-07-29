@@ -1,4 +1,4 @@
-import {Component, View, ElementRef} from 'angular2/angular2';
+import {Component, View} from 'angular2/angular2';
 
 import {VgAPI} from 'com/2fdevs/videogular/services/vg-api';
 
