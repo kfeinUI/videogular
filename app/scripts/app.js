@@ -11,7 +11,8 @@ angular.module('myApp',
             "com.2fdevs.videogular.plugins.poster",
             "com.2fdevs.videogular.plugins.imaads",
             "com.2fdevs.videogular.plugins.dash",
-            "com.2fdevs.videogular.plugins.analytics"
+            "com.2fdevs.videogular.plugins.analytics",
+            "com.vbrick.videogular.plugins.hls"
         ]
     )
     .config(

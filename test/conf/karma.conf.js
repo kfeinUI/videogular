@@ -18,6 +18,7 @@ module.exports = function (config) {
       'app/bower_components/angulartics/src/angulartics.js',
       'app/bower_components/angulartics/src/angulartics-ga.js',
       'app/scripts/dash/dash.all.js',
+      'http://dailymotion.github.io/hls.js/dist/hls.js',
 
       'app/scripts/com/2fdevs/videogular/vg-module.js',
       'app/scripts/com/2fdevs/videogular/**/*.js',

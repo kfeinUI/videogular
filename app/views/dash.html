@@ -7,15 +7,15 @@
                 <videogular vg-player-ready="ctrl.onPlayerReady($API)"
                             vg-theme="ctrl.config.theme.url"
                             vg-auto-play="ctrl.config.autoPlay">
-                    <vg-media vg-src="ctrl.config.sources" vg-tracks="ctrl.config.tracks" vg-dash></vg-media>
+                    <vg-media vg-src="ctrl.config.sources" vg-tracks="ctrl.config.tracks" vg-dash vg-hls></vg-media>
 
                     <vg-controls vg-autohide="ctrl.config.autoHide" vg-autohide-time="ctrl.config.autoHideTime">
                         <vg-play-pause-button></vg-play-pause-button>
-                        <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
-                        <vg-scrub-bar>
+                        <vg-time-display ng-hide="isLive">{{ currentTime | date:'mm:ss' }}</vg-time-display>
+                        <vg-scrub-bar ng-hide="isLive">
                             <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
                         </vg-scrub-bar>
-                        <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
+                        <vg-time-display ng-hide="isLive">{{ timeLeft | date:'mm:ss' }}</vg-time-display>
                         <vg-volume>
                             <vg-mute-button></vg-mute-button>
                             <vg-volume-bar></vg-volume-bar>

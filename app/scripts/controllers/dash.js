@@ -32,7 +32,19 @@ angular.module('myApp').controller('DashCtrl',
         this.media = [
             {
                 sources: [
-                    {src: "http://dash.edgesuite.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1.mpd"}
+                    {src: "http://dash.edgesuite.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1.mpd"},
+                    {
+                        src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.mp4"),
+                        type: "video/mp4"
+                    },
+                    {
+                        src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.ogg"),
+                        type: "video/ogg"
+                    },
+                    {
+                        src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.webm"),
+                        type: "video/webm"
+                    }
                 ]
                 // Tracks are inside .mpd file and added by Dash.js
             },
