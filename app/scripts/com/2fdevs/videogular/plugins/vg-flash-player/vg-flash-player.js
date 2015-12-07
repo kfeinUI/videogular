@@ -4,17 +4,21 @@
  * @restrict A
  * @description
  * Adds Strobe Media Playback integration to vgMedia.
- * This plugin requires swfobject and the custom VBrick build of Strobe Media Playback.
+ * This plugin requires swfobject, the custom VBrick build of Strobe Media Playback, and the HLS plugin (Strobe used for HLS as a fallback when MSE is not supported).
+ * 
+ * Works by embedding a Strobe Flash <object> in place of the Videogular <video> element. Videogular is pointed to the <div> wrapping the <object>, which is wired
+ * up to mimic the expected <video> API.
  *
  * <pre>
  * <videogular vg-theme="config.theme.url" vg-autoplay="config.autoPlay">
- *    <vg-media vg-src="sources" vg-hls></vg-media>
+ *    <vg-media vg-src="sources" vg-hls vg-flash-player vg-flash-player-swf-dir="/swf" vg-flash-player-swfobject-dir="/lib/swfobject"></vg-media>
  * </videogular>
  * </pre>
  *
  *
  * TODOS: 
  * - Configuration of swf locations (attribute).
+ * - Wire up Strobe => API event handlers (based on those in vg-controller).
  * - Split off subtitles into another directive?
  * 
  */
@@ -32,8 +36,6 @@ angular.module("com.vbrick.videogular.plugins.flash", ["com.2fdevs.videogular", 
             require: "^videogular",
             link: function (scope, elem, attr, API) {
                 var player;
-                var currentTime;
-                var duration;
                 var originalVideoElement;
                 var playerId = scope.$id;
                 var isHlsFallback = !VG_HLS_SUPPORT.isNative && VG_HLS_SUPPORT.isMSE; //no native hls support and can't use vg-hls
@@ -112,6 +114,8 @@ angular.module("com.vbrick.videogular.plugins.flash", ["com.2fdevs.videogular", 
 
                             //establish the window-level event handler used by the player
                             $window[eventHandlerName] = function (playerId, event, args){
+                                var dummyEventObj = {target: API.mediaElement[0]};
+
                                 if(player == null){
                                     player = API.mediaElement[0].childNodes[0];
                                 }
@@ -125,7 +129,6 @@ angular.module("com.vbrick.videogular.plugins.flash", ["com.2fdevs.videogular", 
                                     onJavaScriptBridgeCreatedEvent();
                                     break;
                                 case 'durationchange':
-                                    onDurationChangeEvent(args.duration);
                                     updateVg();
                                     break;
                                 case 'timeupdate':
@@ -144,6 +147,12 @@ angular.module("com.vbrick.videogular.plugins.flash", ["com.2fdevs.videogular", 
                                 case 'emptied':
                                     $timeout(onEmptiedEvent, 100);
                                     break;
+                                case 'seeking':
+                                    API.onSeeking(dummyEventObj);
+                                    break;
+                                case 'seeked':
+                                    API.onSeeked(dummyEventObj);
+                                    break;
                                 }
                             };
 
@@ -158,7 +167,7 @@ angular.module("com.vbrick.videogular.plugins.flash", ["com.2fdevs.videogular", 
                             //TODO: apply plugin flashVars
 
                             //create the flash object
-                            $window.swfobject.embedSWF('/app/scripts/com/2fdevs/videogular/plugins/vg-flash-player/StrobeMediaPlayback.swf', playerElementId, "100%", "100%", swfVersion, '/swfobject/expressInstall.swf', flashVars, params, attrs);
+                            $window.swfobject.embedSWF(attr.vgFlashPlayerSwfDir + '/StrobeMediaPlayback.swf', playerElementId, "100%", "100%", swfVersion, attr.vgFlashPlayerSwfObjectDir + '/expressInstall.swf', flashVars, params, attrs);
                             player = API.mediaElement[0].childNodes[0]; //freshly created flash <object>
 
                             //apply styling to the flash object so that it fills our vg region
@@ -209,9 +218,6 @@ angular.module("com.vbrick.videogular.plugins.flash", ["com.2fdevs.videogular", 
                 }
 
                 function onJavaScriptBridgeCreatedEvent(){ //Flash side is ready for interaction
-                    currentTime = 0;
-                    duration = 0;
-
                     setProperties();
 
                     $window.onStrobeLoadStateChange = function(loadState) {
@@ -287,12 +293,6 @@ angular.module("com.vbrick.videogular.plugins.flash", ["com.2fdevs.videogular", 
                     }
                 }
 
-                function onEmptiedEvent() {
-                    if (restorePlaybackPosition) {
-                        API.play();
-                    }
-                }
-
                 function setProperties() { //mimic the video element API
                     var playerWrapper = API.mediaElement[0];
 
@@ -300,16 +300,18 @@ angular.module("com.vbrick.videogular.plugins.flash", ["com.2fdevs.videogular", 
                         currentTime: {
                             configurable: false,
                             get: function() {
-                                return currentTime;
+                                return player.execute('getCurrentTime');
                             },
                             set: function(value) {
-                                //TODO
+                                if(player && player.execute('getCanSeek')){
+                                   player.execute('seek', value);
+                                }
                             }
                         },
 
                         duration: {
                             get: function() {
-                                return duration;
+                                return player ? player.execute('getDuration') : 0;
                             }
                         },
 
@@ -399,20 +401,19 @@ angular.module("com.vbrick.videogular.plugins.flash", ["com.2fdevs.videogular", 
                             try {
                                 return playerFunction.apply(player, args);
                             } catch(ex) {
-                                $log.info(funcName);
-                                $log.dir(arguments);
+                                $log.info('vg-flash-player executePlayerFunc failed for: ' + funcName);
                             }
                         }
                     }
                 }
 
-                function onDurationChangeEvent(value){
-                    duration = value;
+                function onEmptiedEvent() {
+                    if (restorePlaybackPosition) {
+                        API.play();
+                    }
                 }
 
                 function onCurrentTimeChangeEvent(value) {
-                    currentTime = value;
-
                     if (restorePlaybackPosition && player.execute('getPlaying') && player.execute('getCanSeek')) {
                         restorePosition();
                     }
