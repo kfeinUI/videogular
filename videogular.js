@@ -649,16 +649,22 @@ angular.module("com.2fdevs.videogular")
             }
         };
 
-        this.onUpdateStartTime = function onUpdateStartTime(newValue) {
+        this.onUpdateStartTime = function onUpdateStartTime(newValue, applyLater) {
             if (newValue && (newValue != this.startTime)) {
-                this.mediaElement[0].currentTime = newValue;
-                this.startTime = newValue;
-                isVirtualClip = this.startTime >= 0 && this.virtualClipDuration > 0;
+                if (applyLater) {
+                    this.startTime = newValue;
+                    hasStartTimePlayed = false; //vbrick fix to actually reset the flag
+                } else {
+                    this.mediaElement[0].currentTime = newValue;
+                    this.startTime = newValue;
+                    isVirtualClip = this.startTime >= 0 && this.virtualClipDuration > 0;
 
-                var fakeEvent = {
-                    target: this.mediaElement[0]
-                };
-                this.onUpdateTime(fakeEvent, true);
+                    var fakeEvent = {
+                        target: this.mediaElement[0]
+                    };
+                    this.onUpdateTime(fakeEvent, true);
+                }
+                
             }
         };
 
