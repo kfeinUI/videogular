@@ -1,5 +1,13 @@
-bower-videogular
+bower-videogular (forked by Kevin Feinberg)
 ================
+
+## Original fork location
+https://github.com/kfeinUI/videogular/tree/Playback_plugin_support_improvements
+
+## Customizations
+1) Made npm friendly.
+2) Fork offers a proposed enhanced playback plugin architecture. Also adds tracking of the actively used playback source via API.activeSource, support for an isLive property on the playback source object, safe apply fixes using $applyAsync(), improved vgMedia source change check.
+3) Fix for the startTime only being applied once. There's a private variable <em>hasStartTimePlayed</em> which never gets reset. Added an applyLater parameter to API.onUpdateStartTime() so that the flag gets reset and so the new value won't be applied immediately. This way we can set the new value and then change the video source. Note that the existing implementation for some reason seems to be designed to be a one-off execution.
 
 Videogular repository for distribution on `bower`.
 
