@@ -1,6 +1,7 @@
 {
-	"name": "videogular",
+	"name": "@vbrick/videogular",
 	"version": "1.4.0",
+	"description": "Bower and NPM builds of the VBrick fork of the Videogular core. Matches Videogular's structure of having the src in a main repo with separate repos for distribution of the components.",
 	"main": "index.js",
 	"devDependencies": {
 		"grunt": "~0.4.1",
@@ -8,5 +9,9 @@
 	},
 	"engines": {
 		"node": ">=0.8.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "http://git.vbrick.com/Rev/bower-videogular"
 	}
 }
