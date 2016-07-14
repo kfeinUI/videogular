@@ -272,14 +272,12 @@ angular.module("com.2fdevs.videogular")
                     this.totalTime = 1000 * event.target.duration;
                     this.timeLeft = 1000 * (event.target.duration - event.target.currentTime);
                 }
-
-                this.isLive = isLiveSourceOverride;
             }
-            else {
-                // It's a live streaming without and end
+            else { // It's a live streaming without an end (or a funky browser not conveying the duration)
                 this.currentTime = targetTime;
-                this.isLive = true;
             }
+
+            this.isLive = isLiveSourceOverride;
 
             var targetSeconds = isVirtualClip ? this.currentTime / 1000 : event.target.currentTime;
             var targetDuration = isVirtualClip ? this.totalTime / 1000 : event.target.duration;
