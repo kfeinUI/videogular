@@ -429,12 +429,24 @@ angular.module("com.2fdevs.videogular")
         };
 
         this.play = function () {
-            this.mediaElement[0].play();
+            try {
+                var playPromise = this.mediaElement[0].play();
+
+                if (playPromise && playPromise.catch) {
+                    playPromise.catch(function() {
+                        //deliberately empty. don't care. just eat the console noise.
+                    });
+                }
+            } catch (e) {}
+
             this.setState(VG_STATES.PLAY);
         };
 
         this.pause = function () {
-            this.mediaElement[0].pause();
+            try {
+                this.mediaElement[0].pause();
+            } catch(e) {}
+
             this.setState(VG_STATES.PAUSE);
         };
 
