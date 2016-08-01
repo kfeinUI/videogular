@@ -1,6 +1,6 @@
 {
 	"name": "@vbrick/videogular",
-	"version": "1.4.1",
+	"version": "1.4.2",
 	"description": "Bower and NPM builds of the VBrick fork of the Videogular core. Matches Videogular's structure of having the src in a main repo with separate repos for distribution of the components.",
 	"main": "index.js",
 	"engines": {
