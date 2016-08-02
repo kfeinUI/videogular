@@ -267,6 +267,9 @@ angular.module("com.2fdevs.videogular")
                         this.timeLeft = (1000 * this.virtualClipDuration) - this.currentTime;
                     }
                 }
+                else if (!targetTime && this.lastSeekTime > 0) { //bogus time update value thrown while seeking, so short-circuit
+                    return;
+                }
                 else {
                     this.currentTime = targetTime;
                     this.totalTime = 1000 * event.target.duration;
@@ -275,6 +278,11 @@ angular.module("com.2fdevs.videogular")
             }
             else { // It's a live streaming without an end (or a funky browser not conveying the duration)
                 this.currentTime = targetTime;
+            }
+
+            //when the targetTime surpasses the last seek time, discard the last seek time
+            if (targetTime > this.lastSeekTime) {
+                this.lastSeekTime = null;
             }
 
             this.isLive = isLiveSourceOverride;
@@ -404,7 +412,7 @@ angular.module("com.2fdevs.videogular")
                 }
             }
 
-            this.currentTime = 1000 * second;
+            this.currentTime = this.lastSeekTime = 1000 * second;
         };
 
         this.playPause = function () {
