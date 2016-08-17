@@ -161,6 +161,7 @@ angular.module("com.2fdevs.videogular")
             this.mediaElement[0].removeEventListener("playbackchange", this.onPlaybackChange.bind(this), false);
             this.mediaElement[0].removeEventListener("timeupdate", this.onUpdateTime.bind(this), false);
             this.mediaElement[0].removeEventListener("progress", this.onProgress.bind(this), false);
+            this.mediaElement[0].removeEventListener("seeking", this.onSeeking.bind(this), false);
             this.mediaElement[0].removeEventListener("seeked", this.onSeeked.bind(this), false);
             this.mediaElement[0].removeEventListener("error", this.onVideoError.bind(this), false);
         };
@@ -379,13 +380,18 @@ angular.module("com.2fdevs.videogular")
             $scope.$applyAsync();
         };
 
+        this.onSeeking = function (event) {
+            $scope.vgSeeking({$currentTime:  angular.isNumber(this.seekStartTime) ?  this.seekStartTime : event.target.currentTime, $duration: event.target.duration});
+            this.seekStartTime = null;
+        };
+
         this.onSeeked = function (event) {
             $scope.vgSeeked({$currentTime: event.target.currentTime, $duration: event.target.duration});
         };
 
         this.seekTime = function (value, byPercent) {
             var second;
-            $scope.vgSeeking({$currentTime:  this.currentTime / 1000});
+            this.seekStartTime = this.currentTime /1000; //coverting ms to sec...
             if (byPercent) {
                 if (isVirtualClip) {
                     second = (value * this.virtualClipDuration / 100);
@@ -622,6 +628,7 @@ angular.module("com.2fdevs.videogular")
             this.mediaElement[0].addEventListener("playbackchange", this.onPlaybackChange.bind(this), false);
             this.mediaElement[0].addEventListener("timeupdate", this.onUpdateTime.bind(this), false);
             this.mediaElement[0].addEventListener("progress", this.onProgress.bind(this), false);
+            this.mediaElement[0].addEventListener("seeking", this.onSeeking.bind(this), false);
             this.mediaElement[0].addEventListener("seeked", this.onSeeked.bind(this), false);
             this.mediaElement[0].addEventListener("error", this.onVideoError.bind(this), false);
         };
