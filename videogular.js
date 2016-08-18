@@ -381,7 +381,8 @@ angular.module("com.2fdevs.videogular")
         };
 
         this.onSeeking = function (event) {
-            $scope.vgSeeking({$currentTime: event.target.currentTime, $duration: event.target.duration});
+            $scope.vgSeeking({$currentTime:  angular.isNumber(this.seekStartTime) ?  this.seekStartTime : event.target.currentTime, $duration: event.target.duration});
+            this.seekStartTime = null;
         };
 
         this.onSeeked = function (event) {
@@ -390,6 +391,7 @@ angular.module("com.2fdevs.videogular")
 
         this.seekTime = function (value, byPercent) {
             var second;
+            this.seekStartTime = this.currentTime /1000; //coverting ms to sec...
             if (byPercent) {
                 if (isVirtualClip) {
                     second = (value * this.virtualClipDuration / 100);
