@@ -1,4 +1,5 @@
 /**
+ * With customizations by VBrick Systems
  * @license videogular v1.4.0 http://videogular.com
  * Two Fucking Developers http://twofuckingdevelopers.com
  * License: MIT
@@ -137,13 +138,14 @@ angular.module("com.2fdevs.videogular")
  */
 angular.module("com.2fdevs.videogular")
     .controller("vgController",
-    ['$scope', '$window', 'vgConfigLoader', 'vgFullscreen', 'VG_UTILS', 'VG_STATES', 'VG_VOLUME_KEY', function ($scope, $window, vgConfigLoader, vgFullscreen, VG_UTILS, VG_STATES, VG_VOLUME_KEY) {
+    ['$scope', '$window', '$location', 'vgConfigLoader', 'vgFullscreen', 'VG_UTILS', 'VG_STATES', 'VG_VOLUME_KEY', function ($scope, $window, $location, vgConfigLoader, vgFullscreen, VG_UTILS, VG_STATES, VG_VOLUME_KEY) {
         var currentTheme = null;
         var isFullScreenPressed = false;
         var isMetaDataLoaded = false;
         var hasStartTimePlayed = false;
         var isVirtualClip = false;
         var playbackPluginsLoaders = [];
+        const IS_EDGE = $window.navigator.userAgent.includes('Edge');
 
         // PUBLIC $API
         this.videogularElement = null;
@@ -762,6 +764,11 @@ angular.module("com.2fdevs.videogular")
             return false;
         };
 
+        this.isUnsupportedMixedContentPlayback = function(src) {
+            //Edge does not support native mixed content playback
+            return IS_EDGE && !src.startsWith($location.protocol() + ':'); //Edge AND protocol of src differs from that of the window
+        };
+
         Object.defineProperty(this, 'numPlaybackPlugins', {
             get: function() {
                 return playbackPluginsLoaders.length;
@@ -969,7 +976,7 @@ angular.module("com.2fdevs.videogular")
                             if (mediaElementCanPlayType) {
                                 canPlay = API.mediaElement[0].canPlayType(sources[i].type);
 
-                                if (canPlay == "maybe" || canPlay == "probably") {
+                                if ((canPlay == "maybe" || canPlay == "probably") && !API.isUnsupportedMixedContentPlayback(sources[i].src)) {
                                     API.mediaElement.attr("src", sources[i].src);
                                     API.mediaElement.attr("type", sources[i].type);
                                     //Trigger vgChangeSource($source) API callback in vgController
