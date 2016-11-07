@@ -151,6 +151,11 @@ angular.module("com.2fdevs.videogular")
         this.videogularElement = null;
 
         this.clearMedia = function () {
+            if (playbackPluginUnload) {
+                playbackPluginUnload();
+                playbackPluginUnload = null;
+            }
+
             this.mediaElement[0].src = '';
             this.mediaElement[0].removeEventListener("canplay", this.onCanPlay.bind(this), false);
             this.mediaElement[0].removeEventListener("loadedmetadata", this.onLoadMetaData.bind(this), false);
