@@ -151,9 +151,9 @@ angular.module("com.2fdevs.videogular")
         this.videogularElement = null;
 
         this.clearMedia = function () {
-            if (playbackPluginUnload) {
-                playbackPluginUnload();
-                playbackPluginUnload = null;
+            if (this.playbackPluginUnload) {
+                this.playbackPluginUnload();
+                this.playbackPluginUnload = null;
             }
 
             this.mediaElement[0].src = '';
@@ -940,7 +940,6 @@ angular.module("com.2fdevs.videogular")
             },
             link: function (scope, elem, attrs, API) {
                 var sources;
-                var playbackPluginUnload;
 
                 // what type of media do we want? defaults to 'video'
                 if (!attrs.vgType || attrs.vgType === "video") {
@@ -959,9 +958,9 @@ angular.module("com.2fdevs.videogular")
                             API.currentState = VG_STATES.STOP;
                         }
 
-                        if (playbackPluginUnload) {
-                            playbackPluginUnload();
-                            playbackPluginUnload = null;
+                        if (API.playbackPluginUnload) {
+                            API.playbackPluginUnload();
+                            API.playbackPluginUnload = null;
                         }
 
                         API.sources = sources;
@@ -995,7 +994,7 @@ angular.module("com.2fdevs.videogular")
                             var playbackPluginResult = API.attemptPlaybackThroughPlugin(unwrappedSrc, sources[i].type);
                             if (playbackPluginResult) {
                                 canPlay = "probably";
-                                playbackPluginUnload = playbackPluginResult;
+                                API.playbackPluginUnload = playbackPluginResult;
                                 API.changeActiveSource(sources[i]);
                                 break;
                             }
