@@ -145,7 +145,13 @@ angular.module("com.2fdevs.videogular")
         var hasStartTimePlayed = false;
         var isVirtualClip = false;
         var playbackPluginsLoaders = [];
-        const IS_EDGE = $window.navigator.userAgent.includes('Edge');
+
+        const USER_AGENT = $window.navigator.userAgent;
+        const IS_EDGE = USER_AGENT.includes('Edge');
+        const IS_ANDROID_CHROME = USER_AGENT.includes('Android') && USER_AGENT.includes('Chrome');
+        const BLACKLISTED_NATIVE_TESTS = [
+            source => IS_ANDROID_CHROME && API.isHLS && API.isHLS(source.src, source.type) //native HLS on Android Chrome
+        ];
 
         // PUBLIC $API
         this.videogularElement = null;
@@ -774,6 +780,10 @@ angular.module("com.2fdevs.videogular")
             return IS_EDGE && !src.startsWith($location.protocol() + ':'); //Edge AND protocol of src differs from that of the window
         };
 
+        this.isBlacklistedNativeSupport = function(source) {
+            return BLACKLISTED_NATIVE_TESTS.reduce((result, currentTest) => result || currentTest(source));
+        };
+
         Object.defineProperty(this, 'numPlaybackPlugins', {
             get: function() {
                 return playbackPluginsLoaders.length;
@@ -980,7 +990,7 @@ angular.module("com.2fdevs.videogular")
                             if (mediaElementCanPlayType) {
                                 canPlay = API.mediaElement[0].canPlayType(sources[i].type);
 
-                                if ((canPlay == "maybe" || canPlay == "probably") && !API.isUnsupportedMixedContentPlayback(sources[i].src)) {
+                                if ((canPlay == "maybe" || canPlay == "probably") && !API.isUnsupportedMixedContentPlayback(sources[i].src) && !API.isBlacklistedNativeSupport(sources[i])) {
                                     API.mediaElement.attr("src", sources[i].src);
                                     API.mediaElement.attr("type", sources[i].type);
                                     //Trigger vgChangeSource($source) API callback in vgController
