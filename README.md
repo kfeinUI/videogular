@@ -11,6 +11,7 @@ https://github.com/kfeinUI/videogular/tree/Playback_plugin_support_improvements
 4. Cleaned up console noise in the play() and pause() functions.
 5. Native playback support test augmented to factor in Edge's inability to handle mixed content playback.
 6. Seek event payloads have been made more meaningful.
+7. API.isBlacklistedNativeSupport(source) will run the source through a list of tests in order to determine if native support for a particular source is blacklisted. An example of when this may be used is when native support is available but has issues, so alternative playback through a plugin is preferred.
 
 Videogular repository for distribution on `bower`.
 
