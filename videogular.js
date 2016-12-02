@@ -264,7 +264,7 @@ angular.module("com.2fdevs.videogular")
 
         this.onUpdateTime = function (event) {
             var targetTime = 1000 * event.target.currentTime;
-            var isLiveSourceOverride = !!this.activeSource.isLive;
+            var isLiveSourceOverride = this.activeSource && !!this.activeSource.isLive;
 
             this.updateBuffer(event);
 
@@ -781,7 +781,7 @@ angular.module("com.2fdevs.videogular")
         };
 
         this.isBlacklistedNativeSupport = function(source) {
-            return BLACKLISTED_NATIVE_TESTS.reduce((result, currentTest) => result || currentTest(source));
+            return BLACKLISTED_NATIVE_TESTS.reduce((result, currentTest) => result || currentTest(source), false);
         };
 
         Object.defineProperty(this, 'numPlaybackPlugins', {
