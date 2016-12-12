@@ -150,7 +150,7 @@ angular.module("com.2fdevs.videogular")
         const IS_EDGE = USER_AGENT.includes('Edge');
         const IS_ANDROID_CHROME = USER_AGENT.includes('Android') && USER_AGENT.includes('Chrome');
         const BLACKLISTED_NATIVE_TESTS = [
-            source => IS_ANDROID_CHROME && API.isHLS && API.isHLS(source.src, source.type) //native HLS on Android Chrome
+            (source, API) => IS_ANDROID_CHROME && API.isHLS && typeof source.src === 'string' && API.isHLS(source.src, source.type) //native HLS on Android Chrome
         ];
 
         // PUBLIC $API
@@ -403,6 +403,10 @@ angular.module("com.2fdevs.videogular")
         };
 
         this.seekTime = function (value, byPercent) {
+            if (!Number.isFinite(value)) {
+                return;
+            }
+
             var second;
             this.seekStartTime = this.currentTime /1000; //coverting ms to sec...
             if (byPercent) {
@@ -781,7 +785,7 @@ angular.module("com.2fdevs.videogular")
         };
 
         this.isBlacklistedNativeSupport = function(source) {
-            return BLACKLISTED_NATIVE_TESTS.reduce((result, currentTest) => result || currentTest(source), false);
+            return BLACKLISTED_NATIVE_TESTS.reduce((result, currentTest) => result || currentTest(source, this), false);
         };
 
         Object.defineProperty(this, 'numPlaybackPlugins', {
