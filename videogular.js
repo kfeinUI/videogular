@@ -150,7 +150,8 @@ angular.module("com.2fdevs.videogular")
         const IS_EDGE = USER_AGENT.includes('Edge');
         const IS_ANDROID_CHROME = USER_AGENT.includes('Android') && USER_AGENT.includes('Chrome');
         const BLACKLISTED_NATIVE_TESTS = [
-            (source, API) => IS_ANDROID_CHROME && API.isHLS && typeof source.src === 'string' && API.isHLS(source.src, source.type) //native HLS on Android Chrome
+            (source, API) => IS_ANDROID_CHROME && API.isHLS && typeof source.src === 'string' && API.isHLS(source.src, source.type), //native HLS on Android Chrome
+            (source, API) => IS_EDGE && API.isHLS && typeof source.src === 'string' && API.isHLS(source.src, source.type) //native HLS on IE Edge
         ];
 
         // PUBLIC $API
