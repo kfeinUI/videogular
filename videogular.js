@@ -150,16 +150,20 @@ angular.module("com.2fdevs.videogular")
         const IS_EDGE = USER_AGENT.includes('Edge');
         const IS_ANDROID_CHROME = USER_AGENT.includes('Android') && USER_AGENT.includes('Chrome');
         const BLACKLISTED_NATIVE_TESTS = [
-            (source, API) => IS_ANDROID_CHROME && isHlsSource(source, API) && !source.isLive, //native HLS on Android Chrome (targeted at VOD only for the time being since our RTMP => HLS Akamai path doesn't support HTTPS yet)
-            (source, API) => IS_EDGE && isHlsSource(source, API) //native HLS on IE Edge
+            (source, API) => IS_ANDROID_CHROME && isHlsSource(source, API) && !API.isMixedContent(source.src), //blacklist non-mixed content HLS
+            (source, API) => IS_EDGE && isHlsSource(source, API) //native HLS on Edge
         ];
 
         function isHlsSource(source, API) {
-            return API.isHLS && typeof source.src === 'string' && API.isHLS(source.src, source.type);
+            return API.isHLS && angular.isString(source.src) && API.isHLS(source.src, source.type);
         }
 
         // PUBLIC $API
         this.videogularElement = null;
+
+        this.isMixedContent = function(src) {
+            return angular.isString(src) && !src.toLowerCase().startsWith($location.protocol());
+        }
 
         this.clearMedia = function () {
             if (this.playbackPluginUnload) {
